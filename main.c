@@ -28,13 +28,12 @@ int main(void)
 
 	while(1)
 	{
-		// aktywacja 1. wyswietlacza
-		PORTB = 0;
-		
-		for(int i = 0; i < 10; i++)
+		// multipleksowanie 6 wyswietlaczy
+		for(int i = 0; i < 6; i++)
 		{
-			PORTC = segments[i]; // wysterowanie wyswietlacza
-			_delay_ms(1000);
+			PORTB = (1 << i); // aktywacja wyswietlacza
+			PORTC = segments[i]; // ustawienie liczby na wyswietlaczu 
+			_delay_ms(5); // 200Hz
 		}
 	}
 	
