@@ -2,6 +2,9 @@
 #include <util/delay.h>
 
 
+#define SELECT_DISPLAY(x)  PORTB = (1 << x);
+#define SET_DIGIT(x)       PORTC = (x < 0 ? 0 : segments[x]);
+
 int main(void)
 {
 	// inicjalizacja
@@ -26,13 +29,23 @@ int main(void)
 		(1 << PC0) | (1 << PC1) | (1 << PC2) | (1 << PC3) | 			 (1 << PC5) | (1 << PC6)  // 9
 	};
 
+	uint8_t buffer[6];
+
+	buffer[0] = 4;
+	buffer[1] = 4;
+	buffer[2] = 2;
+	buffer[3] = 6;
+	buffer[4] = 2;
+	buffer[5] = 0;
+
+
 	while(1)
 	{
 		// multipleksowanie 6 wyswietlaczy
 		for(int i = 0; i < 6; i++)
 		{
-			PORTB = (1 << i); // aktywacja wyswietlacza
-			PORTC = segments[i]; // ustawienie liczby na wyswietlaczu 
+			SELECT_DISPLAY(i); // aktywacja wyswietlacza
+			SET_DIGIT(buffer[i]); // ustawienie liczby na wyswietlaczu 
 			_delay_ms(5); // 200Hz
 		}
 	}

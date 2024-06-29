@@ -3,27 +3,27 @@ main.elf:     file format elf32-avr
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .text         000000ce  00000000  00000000  00000074  2**1
+  0 .text         000000fc  00000000  00000000  00000074  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  1 .data         0000000a  00800060  000000ce  00000142  2**0
+  1 .data         0000000a  00800060  000000fc  00000170  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  2 .debug_aranges 00000020  00000000  00000000  0000014c  2**0
+  2 .debug_aranges 00000020  00000000  00000000  0000017a  2**0
                   CONTENTS, READONLY, DEBUGGING
-  3 .debug_pubnames 0000001b  00000000  00000000  0000016c  2**0
+  3 .debug_pubnames 0000001b  00000000  00000000  0000019a  2**0
                   CONTENTS, READONLY, DEBUGGING
-  4 .debug_info   00000150  00000000  00000000  00000187  2**0
+  4 .debug_info   0000016e  00000000  00000000  000001b5  2**0
                   CONTENTS, READONLY, DEBUGGING
-  5 .debug_abbrev 000000e8  00000000  00000000  000002d7  2**0
+  5 .debug_abbrev 000000e8  00000000  00000000  00000323  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_line   0000012f  00000000  00000000  000003bf  2**0
+  6 .debug_line   00000165  00000000  00000000  0000040b  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_frame  00000020  00000000  00000000  000004f0  2**2
+  7 .debug_frame  00000020  00000000  00000000  00000570  2**2
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_str    000000e6  00000000  00000000  00000510  2**0
+  8 .debug_str    000000ed  00000000  00000000  00000590  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_loc    00000028  00000000  00000000  000005f6  2**0
+  9 .debug_loc    00000028  00000000  00000000  0000067d  2**0
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_ranges 00000048  00000000  00000000  0000061e  2**0
+ 10 .debug_ranges 00000048  00000000  00000000  000006a5  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -63,7 +63,7 @@ Disassembly of section .text:
   60:	10 e0       	ldi	r17, 0x00	; 0
   62:	a0 e6       	ldi	r26, 0x60	; 96
   64:	b0 e0       	ldi	r27, 0x00	; 0
-  66:	ee ec       	ldi	r30, 0xCE	; 206
+  66:	ec ef       	ldi	r30, 0xFC	; 252
   68:	f0 e0       	ldi	r31, 0x00	; 0
   6a:	02 c0       	rjmp	.+4      	; 0x70 <.do_copy_data_start>
 
@@ -76,79 +76,124 @@ Disassembly of section .text:
   72:	b1 07       	cpc	r27, r17
   74:	d9 f7       	brne	.-10     	; 0x6c <.do_copy_data_loop>
   76:	0e 94 41 00 	call	0x82	; 0x82 <main>
-  7a:	0c 94 65 00 	jmp	0xca	; 0xca <_exit>
+  7a:	0c 94 7c 00 	jmp	0xf8	; 0xf8 <_exit>
 
 0000007e <__bad_interrupt>:
   7e:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
 
 00000082 <main>:
+
+#define SELECT_DISPLAY(x)  PORTB = (1 << x);
+#define SET_DIGIT(x)       PORTC = (x < 0 ? 0 : segments[x]);
+
 int main(void)
 {
+  82:	df 93       	push	r29
+  84:	cf 93       	push	r28
+  86:	00 d0       	rcall	.+0      	; 0x88 <main+0x6>
+  88:	00 d0       	rcall	.+0      	; 0x8a <main+0x8>
+  8a:	00 d0       	rcall	.+0      	; 0x8c <main+0xa>
+  8c:	cd b7       	in	r28, 0x3d	; 61
+  8e:	de b7       	in	r29, 0x3e	; 62
 	// inicjalizacja
 
 	// PB[0-5] jako wyjscia - do wyboru wyswietlacza
 	DDRB |= (1 << PB0) | (1 << PB1) | (1 << PB2) | (1 << PB3) | (1 << PB4) | (1 << PB5);
-  82:	87 b3       	in	r24, 0x17	; 23
-  84:	8f 63       	ori	r24, 0x3F	; 63
-  86:	87 bb       	out	0x17, r24	; 23
+  90:	87 b3       	in	r24, 0x17	; 23
+  92:	8f 63       	ori	r24, 0x3F	; 63
+  94:	87 bb       	out	0x17, r24	; 23
 	
 	// PC[0-6] jako wyjscia - sterowanie wyswietlaczem 7-segmentowym
 	DDRC |= (1 << PC0) | (1 << PC1) | (1 << PC2) | (1 << PC3) | (1 << PC4) | (1 << PC5) | (1 << PC6); 
-  88:	84 b3       	in	r24, 0x14	; 20
-  8a:	8f 67       	ori	r24, 0x7F	; 127
-  8c:	84 bb       	out	0x14, r24	; 20
-  8e:	20 e0       	ldi	r18, 0x00	; 0
-  90:	30 e0       	ldi	r19, 0x00	; 0
+  96:	84 b3       	in	r24, 0x14	; 20
+  98:	8f 67       	ori	r24, 0x7F	; 127
+  9a:	84 bb       	out	0x14, r24	; 20
+		(1 << PC0) | (1 << PC1) | (1 << PC2) | (1 << PC3) | 			 (1 << PC5) | (1 << PC6)  // 9
+	};
+
+	uint8_t buffer[6];
+
+	buffer[0] = 4;
+  9c:	84 e0       	ldi	r24, 0x04	; 4
+  9e:	89 83       	std	Y+1, r24	; 0x01
+	buffer[1] = 4;
+  a0:	8a 83       	std	Y+2, r24	; 0x02
+	buffer[2] = 2;
+  a2:	92 e0       	ldi	r25, 0x02	; 2
+  a4:	9b 83       	std	Y+3, r25	; 0x03
+	buffer[3] = 6;
+  a6:	86 e0       	ldi	r24, 0x06	; 6
+  a8:	8c 83       	std	Y+4, r24	; 0x04
+	buffer[4] = 2;
+  aa:	9d 83       	std	Y+5, r25	; 0x05
+	buffer[5] = 0;
+  ac:	1e 82       	std	Y+6, r1	; 0x06
+  ae:	20 e0       	ldi	r18, 0x00	; 0
+  b0:	30 e0       	ldi	r19, 0x00	; 0
+	while(1)
 	{
-		// aktywacja 1. wyswietlacza
-		
+		// multipleksowanie 6 wyswietlaczy
 		for(int i = 0; i < 6; i++)
 		{
-			PORTB = (1 << i);
-  92:	61 e0       	ldi	r22, 0x01	; 1
-  94:	70 e0       	ldi	r23, 0x00	; 0
+			SELECT_DISPLAY(i); // aktywacja wyswietlacza
+  b2:	a1 e0       	ldi	r26, 0x01	; 1
+  b4:	b0 e0       	ldi	r27, 0x00	; 0
+			SET_DIGIT(buffer[i]); // ustawienie liczby na wyswietlaczu 
+  b6:	be 01       	movw	r22, r28
+  b8:	6f 5f       	subi	r22, 0xFF	; 255
+  ba:	7f 4f       	sbci	r23, 0xFF	; 255
     milliseconds can be achieved.
  */
 void
 _delay_loop_2(uint16_t __count)
 {
 	__asm__ volatile (
-  96:	40 e1       	ldi	r20, 0x10	; 16
-  98:	57 e2       	ldi	r21, 0x27	; 39
-  9a:	cb 01       	movw	r24, r22
-  9c:	02 2e       	mov	r0, r18
-  9e:	02 c0       	rjmp	.+4      	; 0xa4 <main+0x22>
-  a0:	88 0f       	add	r24, r24
-  a2:	99 1f       	adc	r25, r25
-  a4:	0a 94       	dec	r0
-  a6:	e2 f7       	brpl	.-8      	; 0xa0 <main+0x1e>
-  a8:	88 bb       	out	0x18, r24	; 24
-			PORTC = segments[i]; // wysterowanie wyswietlacza 
-  aa:	f9 01       	movw	r30, r18
-  ac:	e0 5a       	subi	r30, 0xA0	; 160
-  ae:	ff 4f       	sbci	r31, 0xFF	; 255
-  b0:	80 81       	ld	r24, Z
-  b2:	85 bb       	out	0x15, r24	; 21
-  b4:	ca 01       	movw	r24, r20
-  b6:	01 97       	sbiw	r24, 0x01	; 1
-  b8:	f1 f7       	brne	.-4      	; 0xb6 <main+0x34>
+  bc:	40 e1       	ldi	r20, 0x10	; 16
+  be:	57 e2       	ldi	r21, 0x27	; 39
+	while(1)
+	{
+		// multipleksowanie 6 wyswietlaczy
+		for(int i = 0; i < 6; i++)
+		{
+			SELECT_DISPLAY(i); // aktywacja wyswietlacza
+  c0:	cd 01       	movw	r24, r26
+  c2:	02 2e       	mov	r0, r18
+  c4:	02 c0       	rjmp	.+4      	; 0xca <main+0x48>
+  c6:	88 0f       	add	r24, r24
+  c8:	99 1f       	adc	r25, r25
+  ca:	0a 94       	dec	r0
+  cc:	e2 f7       	brpl	.-8      	; 0xc6 <main+0x44>
+  ce:	88 bb       	out	0x18, r24	; 24
+			SET_DIGIT(buffer[i]); // ustawienie liczby na wyswietlaczu 
+  d0:	fb 01       	movw	r30, r22
+  d2:	e2 0f       	add	r30, r18
+  d4:	f3 1f       	adc	r31, r19
+  d6:	e0 81       	ld	r30, Z
+  d8:	f0 e0       	ldi	r31, 0x00	; 0
+  da:	e0 5a       	subi	r30, 0xA0	; 160
+  dc:	ff 4f       	sbci	r31, 0xFF	; 255
+  de:	80 81       	ld	r24, Z
+  e0:	85 bb       	out	0x15, r24	; 21
+  e2:	ca 01       	movw	r24, r20
+  e4:	01 97       	sbiw	r24, 0x01	; 1
+  e6:	f1 f7       	brne	.-4      	; 0xe4 <main+0x62>
+
 
 	while(1)
 	{
-		// aktywacja 1. wyswietlacza
-		
+		// multipleksowanie 6 wyswietlaczy
 		for(int i = 0; i < 6; i++)
-  ba:	2f 5f       	subi	r18, 0xFF	; 255
-  bc:	3f 4f       	sbci	r19, 0xFF	; 255
-  be:	26 30       	cpi	r18, 0x06	; 6
-  c0:	31 05       	cpc	r19, r1
-  c2:	5c f3       	brlt	.-42     	; 0x9a <main+0x18>
-  c4:	20 e0       	ldi	r18, 0x00	; 0
-  c6:	30 e0       	ldi	r19, 0x00	; 0
-  c8:	e8 cf       	rjmp	.-48     	; 0x9a <main+0x18>
+  e8:	2f 5f       	subi	r18, 0xFF	; 255
+  ea:	3f 4f       	sbci	r19, 0xFF	; 255
+  ec:	26 30       	cpi	r18, 0x06	; 6
+  ee:	31 05       	cpc	r19, r1
+  f0:	3c f3       	brlt	.-50     	; 0xc0 <main+0x3e>
+  f2:	20 e0       	ldi	r18, 0x00	; 0
+  f4:	30 e0       	ldi	r19, 0x00	; 0
+  f6:	e4 cf       	rjmp	.-56     	; 0xc0 <main+0x3e>
 
-000000ca <_exit>:
-  ca:	f8 94       	cli
+000000f8 <_exit>:
+  f8:	f8 94       	cli
 
-000000cc <__stop_program>:
-  cc:	ff cf       	rjmp	.-2      	; 0xcc <__stop_program>
+000000fa <__stop_program>:
+  fa:	ff cf       	rjmp	.-2      	; 0xfa <__stop_program>
