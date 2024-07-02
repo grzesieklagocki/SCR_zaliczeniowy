@@ -3,25 +3,25 @@ main.elf:     file format elf32-avr
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .text         0000022e  00000000  00000000  00000094  2**1
+  0 .text         000002e0  00000000  00000000  00000094  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  1 .data         0000000a  00800060  0000022e  000002c2  2**0
+  1 .data         0000000a  00800060  000002e0  00000374  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  2 .bss          00000007  0080006a  0080006a  000002cc  2**0
+  2 .bss          0000000a  0080006a  0080006a  0000037e  2**0
                   ALLOC
-  3 .debug_aranges 00000020  00000000  00000000  000002cc  2**0
+  3 .debug_aranges 00000020  00000000  00000000  0000037e  2**0
                   CONTENTS, READONLY, DEBUGGING
-  4 .debug_pubnames 0000007d  00000000  00000000  000002ec  2**0
+  4 .debug_pubnames 000000b9  00000000  00000000  0000039e  2**0
                   CONTENTS, READONLY, DEBUGGING
-  5 .debug_info   0000013e  00000000  00000000  00000369  2**0
+  5 .debug_info   000001dd  00000000  00000000  00000457  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_abbrev 0000009d  00000000  00000000  000004a7  2**0
+  6 .debug_abbrev 000000ff  00000000  00000000  00000634  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_line   00000183  00000000  00000000  00000544  2**0
+  7 .debug_line   0000021e  00000000  00000000  00000733  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_frame  00000060  00000000  00000000  000006c8  2**2
+  8 .debug_frame  00000090  00000000  00000000  00000954  2**2
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_str    000000e0  00000000  00000000  00000728  2**0
+  9 .debug_str    00000122  00000000  00000000  000009e4  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -34,10 +34,10 @@ Disassembly of section .text:
   10:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
   14:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
   18:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
-  1c:	0c 94 cc 00 	jmp	0x198	; 0x198 <__vector_7>
+  1c:	0c 94 f2 00 	jmp	0x1e4	; 0x1e4 <__vector_7>
   20:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
   24:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
-  28:	0c 94 55 00 	jmp	0xaa	; 0xaa <__vector_10>
+  28:	0c 94 82 00 	jmp	0x104	; 0x104 <__vector_10>
   2c:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
   30:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
   34:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
@@ -61,7 +61,7 @@ Disassembly of section .text:
   60:	10 e0       	ldi	r17, 0x00	; 0
   62:	a0 e6       	ldi	r26, 0x60	; 96
   64:	b0 e0       	ldi	r27, 0x00	; 0
-  66:	ee e2       	ldi	r30, 0x2E	; 46
+  66:	e0 ee       	ldi	r30, 0xE0	; 224
   68:	f2 e0       	ldi	r31, 0x02	; 2
   6a:	02 c0       	rjmp	.+4      	; 0x70 <.do_copy_data_start>
 
@@ -84,286 +84,407 @@ Disassembly of section .text:
   7e:	1d 92       	st	X+, r1
 
 00000080 <.do_clear_bss_start>:
-  80:	a1 37       	cpi	r26, 0x71	; 113
+  80:	a4 37       	cpi	r26, 0x74	; 116
   82:	b1 07       	cpc	r27, r17
   84:	e1 f7       	brne	.-8      	; 0x7e <.do_clear_bss_loop>
-  86:	0e 94 b0 00 	call	0x160	; 0x160 <main>
-  8a:	0c 94 15 01 	jmp	0x22a	; 0x22a <_exit>
+  86:	0e 94 dd 00 	call	0x1ba	; 0x1ba <main>
+  8a:	0c 94 6e 01 	jmp	0x2dc	; 0x2dc <_exit>
 
 0000008e <__bad_interrupt>:
   8e:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
 
-00000092 <init_timer0>:
+00000092 <add_minute>:
+/****************************************************************/
+// funkcja zwiekszajaca czas o 1m
+/****************************************************************/
+void add_minute(void)
+{
+	if (current_time.minutes < 59)
+  92:	80 91 6c 00 	lds	r24, 0x006C
+  96:	8b 33       	cpi	r24, 0x3B	; 59
+  98:	20 f4       	brcc	.+8      	; 0xa2 <add_minute+0x10>
+		current_time.minutes++;
+  9a:	8f 5f       	subi	r24, 0xFF	; 255
+  9c:	80 93 6c 00 	sts	0x006C, r24
+  a0:	08 95       	ret
+	else
+	{
+		current_time.minutes = 0;
+  a2:	10 92 6c 00 	sts	0x006C, r1
+/****************************************************************/
+// funkcja zwiekszajaca czas o 1h
+/****************************************************************/
+void add_hour(void)
+{
+	if (current_time.hours < 23)
+  a6:	80 91 6d 00 	lds	r24, 0x006D
+  aa:	87 31       	cpi	r24, 0x17	; 23
+  ac:	20 f4       	brcc	.+8      	; 0xb6 <add_minute+0x24>
+		current_time.hours++;
+  ae:	8f 5f       	subi	r24, 0xFF	; 255
+  b0:	80 93 6d 00 	sts	0x006D, r24
+  b4:	08 95       	ret
+	else
+		current_time.hours = 0;
+  b6:	10 92 6d 00 	sts	0x006D, r1
+  ba:	08 95       	ret
+
+000000bc <add_second>:
+/****************************************************************/
+// funkcja zwiekszajaca czas o 1s
+/****************************************************************/
+void add_second(void)
+{
+	if (current_time.seconds < 59)
+  bc:	80 91 6b 00 	lds	r24, 0x006B
+  c0:	8b 33       	cpi	r24, 0x3B	; 59
+  c2:	20 f4       	brcc	.+8      	; 0xcc <add_second+0x10>
+		current_time.seconds++;
+  c4:	8f 5f       	subi	r24, 0xFF	; 255
+  c6:	80 93 6b 00 	sts	0x006B, r24
+  ca:	08 95       	ret
+	else
+	{
+		current_time.seconds = 0;
+  cc:	10 92 6b 00 	sts	0x006B, r1
+		add_minute();
+  d0:	0e 94 49 00 	call	0x92	; 0x92 <add_minute>
+  d4:	08 95       	ret
+
+000000d6 <add_hour>:
+/****************************************************************/
+// funkcja zwiekszajaca czas o 1h
+/****************************************************************/
+void add_hour(void)
+{
+	if (current_time.hours < 23)
+  d6:	80 91 6d 00 	lds	r24, 0x006D
+  da:	87 31       	cpi	r24, 0x17	; 23
+  dc:	20 f4       	brcc	.+8      	; 0xe6 <add_hour+0x10>
+		current_time.hours++;
+  de:	8f 5f       	subi	r24, 0xFF	; 255
+  e0:	80 93 6d 00 	sts	0x006D, r24
+  e4:	08 95       	ret
+	else
+		current_time.hours = 0;
+  e6:	10 92 6d 00 	sts	0x006D, r1
+  ea:	08 95       	ret
+
+000000ec <init_timer0>:
 /****************************************************************/
 // inicjalizacja timera 0 i ustawienie na 180 Hz (do multipleksowania)
 /****************************************************************/
 void init_timer0(void)
 {
     TCCR0 |= (1 << WGM01); // tryb CTC
-  92:	83 b7       	in	r24, 0x33	; 51
-  94:	88 60       	ori	r24, 0x08	; 8
-  96:	83 bf       	out	0x33, r24	; 51
+  ec:	83 b7       	in	r24, 0x33	; 51
+  ee:	88 60       	ori	r24, 0x08	; 8
+  f0:	83 bf       	out	0x33, r24	; 51
     TCCR0 |= (1 << CS02) | (1 << CS00); // preskaler 1024
-  98:	83 b7       	in	r24, 0x33	; 51
-  9a:	85 60       	ori	r24, 0x05	; 5
-  9c:	83 bf       	out	0x33, r24	; 51
+  f2:	83 b7       	in	r24, 0x33	; 51
+  f4:	85 60       	ori	r24, 0x05	; 5
+  f6:	83 bf       	out	0x33, r24	; 51
 	OCR0 = 171; // (1 / czestotliwosc) / (1 / (F_CPU / preskaler))) - 1
-  9e:	8b ea       	ldi	r24, 0xAB	; 171
-  a0:	8c bf       	out	0x3c, r24	; 60
+  f8:	8b ea       	ldi	r24, 0xAB	; 171
+  fa:	8c bf       	out	0x3c, r24	; 60
     TIMSK |= (1 << OCIE0); // zezwolenie na przerwanie timera 0
-  a2:	89 b7       	in	r24, 0x39	; 57
-  a4:	82 60       	ori	r24, 0x02	; 2
-  a6:	89 bf       	out	0x39, r24	; 57
+  fc:	89 b7       	in	r24, 0x39	; 57
+  fe:	82 60       	ori	r24, 0x02	; 2
+ 100:	89 bf       	out	0x39, r24	; 57
 }
-  a8:	08 95       	ret
+ 102:	08 95       	ret
 
-000000aa <__vector_10>:
+00000104 <__vector_10>:
 
 /****************************************************************/
 // obsluga przerwania timer0 (do multipleksowania)
 /****************************************************************/
 ISR(TIMER0_COMP_vect)
 {
-  aa:	1f 92       	push	r1
-  ac:	0f 92       	push	r0
-  ae:	0f b6       	in	r0, 0x3f	; 63
-  b0:	0f 92       	push	r0
-  b2:	11 24       	eor	r1, r1
-  b4:	2f 93       	push	r18
-  b6:	5f 93       	push	r21
-  b8:	6f 93       	push	r22
-  ba:	7f 93       	push	r23
-  bc:	8f 93       	push	r24
-  be:	9f 93       	push	r25
-  c0:	af 93       	push	r26
-  c2:	bf 93       	push	r27
-  c4:	ef 93       	push	r30
-  c6:	ff 93       	push	r31
+ 104:	1f 92       	push	r1
+ 106:	0f 92       	push	r0
+ 108:	0f b6       	in	r0, 0x3f	; 63
+ 10a:	0f 92       	push	r0
+ 10c:	11 24       	eor	r1, r1
+ 10e:	2f 93       	push	r18
+ 110:	5f 93       	push	r21
+ 112:	6f 93       	push	r22
+ 114:	7f 93       	push	r23
+ 116:	8f 93       	push	r24
+ 118:	9f 93       	push	r25
+ 11a:	af 93       	push	r26
+ 11c:	bf 93       	push	r27
+ 11e:	ef 93       	push	r30
+ 120:	ff 93       	push	r31
 	SELECT_DISPLAY(cursor);	  // aktywacja wyswietlacza
-  c8:	20 91 6a 00 	lds	r18, 0x006A
-  cc:	81 e0       	ldi	r24, 0x01	; 1
-  ce:	90 e0       	ldi	r25, 0x00	; 0
-  d0:	02 c0       	rjmp	.+4      	; 0xd6 <__vector_10+0x2c>
-  d2:	88 0f       	add	r24, r24
-  d4:	99 1f       	adc	r25, r25
-  d6:	2a 95       	dec	r18
-  d8:	e2 f7       	brpl	.-8      	; 0xd2 <__vector_10+0x28>
-  da:	88 bb       	out	0x18, r24	; 24
+ 122:	20 91 6a 00 	lds	r18, 0x006A
+ 126:	81 e0       	ldi	r24, 0x01	; 1
+ 128:	90 e0       	ldi	r25, 0x00	; 0
+ 12a:	02 c0       	rjmp	.+4      	; 0x130 <__vector_10+0x2c>
+ 12c:	88 0f       	add	r24, r24
+ 12e:	99 1f       	adc	r25, r25
+ 130:	2a 95       	dec	r18
+ 132:	e2 f7       	brpl	.-8      	; 0x12c <__vector_10+0x28>
+ 134:	88 bb       	out	0x18, r24	; 24
 	SET_DIGIT(buffer[cursor]); // ustawienie liczby na wyswietlaczu
-  dc:	e0 91 6a 00 	lds	r30, 0x006A
-  e0:	f0 e0       	ldi	r31, 0x00	; 0
-  e2:	e5 59       	subi	r30, 0x95	; 149
-  e4:	ff 4f       	sbci	r31, 0xFF	; 255
-  e6:	e0 81       	ld	r30, Z
-  e8:	e0 91 6a 00 	lds	r30, 0x006A
-  ec:	f0 e0       	ldi	r31, 0x00	; 0
-  ee:	e5 59       	subi	r30, 0x95	; 149
-  f0:	ff 4f       	sbci	r31, 0xFF	; 255
-  f2:	80 81       	ld	r24, Z
-  f4:	8a 30       	cpi	r24, 0x0A	; 10
-  f6:	10 f0       	brcs	.+4      	; 0xfc <__vector_10+0x52>
-  f8:	e0 e0       	ldi	r30, 0x00	; 0
-  fa:	0a c0       	rjmp	.+20     	; 0x110 <__vector_10+0x66>
-  fc:	e0 91 6a 00 	lds	r30, 0x006A
- 100:	f0 e0       	ldi	r31, 0x00	; 0
- 102:	e5 59       	subi	r30, 0x95	; 149
- 104:	ff 4f       	sbci	r31, 0xFF	; 255
- 106:	e0 81       	ld	r30, Z
- 108:	f0 e0       	ldi	r31, 0x00	; 0
- 10a:	e0 5a       	subi	r30, 0xA0	; 160
- 10c:	ff 4f       	sbci	r31, 0xFF	; 255
- 10e:	e0 81       	ld	r30, Z
- 110:	e5 bb       	out	0x15, r30	; 21
+ 136:	e0 91 6a 00 	lds	r30, 0x006A
+ 13a:	f0 e0       	ldi	r31, 0x00	; 0
+ 13c:	e2 59       	subi	r30, 0x92	; 146
+ 13e:	ff 4f       	sbci	r31, 0xFF	; 255
+ 140:	e0 81       	ld	r30, Z
+ 142:	e0 91 6a 00 	lds	r30, 0x006A
+ 146:	f0 e0       	ldi	r31, 0x00	; 0
+ 148:	e2 59       	subi	r30, 0x92	; 146
+ 14a:	ff 4f       	sbci	r31, 0xFF	; 255
+ 14c:	80 81       	ld	r24, Z
+ 14e:	8a 30       	cpi	r24, 0x0A	; 10
+ 150:	10 f0       	brcs	.+4      	; 0x156 <__vector_10+0x52>
+ 152:	e0 e0       	ldi	r30, 0x00	; 0
+ 154:	0a c0       	rjmp	.+20     	; 0x16a <__vector_10+0x66>
+ 156:	e0 91 6a 00 	lds	r30, 0x006A
+ 15a:	f0 e0       	ldi	r31, 0x00	; 0
+ 15c:	e2 59       	subi	r30, 0x92	; 146
+ 15e:	ff 4f       	sbci	r31, 0xFF	; 255
+ 160:	e0 81       	ld	r30, Z
+ 162:	f0 e0       	ldi	r31, 0x00	; 0
+ 164:	e0 5a       	subi	r30, 0xA0	; 160
+ 166:	ff 4f       	sbci	r31, 0xFF	; 255
+ 168:	e0 81       	ld	r30, Z
+ 16a:	e5 bb       	out	0x15, r30	; 21
 	CURSOR_NEXT; // przejscie do nastepnego wyswietlacza
- 112:	80 91 6a 00 	lds	r24, 0x006A
- 116:	90 e0       	ldi	r25, 0x00	; 0
- 118:	01 96       	adiw	r24, 0x01	; 1
- 11a:	66 e0       	ldi	r22, 0x06	; 6
- 11c:	70 e0       	ldi	r23, 0x00	; 0
- 11e:	0e 94 ee 00 	call	0x1dc	; 0x1dc <__divmodhi4>
- 122:	80 93 6a 00 	sts	0x006A, r24
+ 16c:	80 91 6a 00 	lds	r24, 0x006A
+ 170:	90 e0       	ldi	r25, 0x00	; 0
+ 172:	01 96       	adiw	r24, 0x01	; 1
+ 174:	66 e0       	ldi	r22, 0x06	; 6
+ 176:	70 e0       	ldi	r23, 0x00	; 0
+ 178:	0e 94 47 01 	call	0x28e	; 0x28e <__divmodhi4>
+ 17c:	80 93 6a 00 	sts	0x006A, r24
 }
- 126:	ff 91       	pop	r31
- 128:	ef 91       	pop	r30
- 12a:	bf 91       	pop	r27
- 12c:	af 91       	pop	r26
- 12e:	9f 91       	pop	r25
- 130:	8f 91       	pop	r24
- 132:	7f 91       	pop	r23
- 134:	6f 91       	pop	r22
- 136:	5f 91       	pop	r21
- 138:	2f 91       	pop	r18
- 13a:	0f 90       	pop	r0
- 13c:	0f be       	out	0x3f, r0	; 63
- 13e:	0f 90       	pop	r0
- 140:	1f 90       	pop	r1
- 142:	18 95       	reti
+ 180:	ff 91       	pop	r31
+ 182:	ef 91       	pop	r30
+ 184:	bf 91       	pop	r27
+ 186:	af 91       	pop	r26
+ 188:	9f 91       	pop	r25
+ 18a:	8f 91       	pop	r24
+ 18c:	7f 91       	pop	r23
+ 18e:	6f 91       	pop	r22
+ 190:	5f 91       	pop	r21
+ 192:	2f 91       	pop	r18
+ 194:	0f 90       	pop	r0
+ 196:	0f be       	out	0x3f, r0	; 63
+ 198:	0f 90       	pop	r0
+ 19a:	1f 90       	pop	r1
+ 19c:	18 95       	reti
 
-00000144 <init_timer1>:
+0000019e <init_timer1>:
 /****************************************************************/
 // inicjalizacja timera 1 i ustawienie na 1 Hz (do odmierzania sekund)
 /****************************************************************/
 void init_timer1(void)
 {
 	TCCR1B |=  (1 << WGM12); // tryb CTC
- 144:	8e b5       	in	r24, 0x2e	; 46
- 146:	88 60       	ori	r24, 0x08	; 8
- 148:	8e bd       	out	0x2e, r24	; 46
+ 19e:	8e b5       	in	r24, 0x2e	; 46
+ 1a0:	88 60       	ori	r24, 0x08	; 8
+ 1a2:	8e bd       	out	0x2e, r24	; 46
     TCCR1B |= (1 << CS12); // preskaler 256
- 14a:	8e b5       	in	r24, 0x2e	; 46
- 14c:	84 60       	ori	r24, 0x04	; 4
- 14e:	8e bd       	out	0x2e, r24	; 46
+ 1a4:	8e b5       	in	r24, 0x2e	; 46
+ 1a6:	84 60       	ori	r24, 0x04	; 4
+ 1a8:	8e bd       	out	0x2e, r24	; 46
 	OCR1A = 31249; // (1 / czestotliwosc) / (1 / (F_CPU / preskaler))) - 1
- 150:	81 e1       	ldi	r24, 0x11	; 17
- 152:	9a e7       	ldi	r25, 0x7A	; 122
- 154:	9b bd       	out	0x2b, r25	; 43
- 156:	8a bd       	out	0x2a, r24	; 42
+ 1aa:	81 e1       	ldi	r24, 0x11	; 17
+ 1ac:	9a e7       	ldi	r25, 0x7A	; 122
+ 1ae:	9b bd       	out	0x2b, r25	; 43
+ 1b0:	8a bd       	out	0x2a, r24	; 42
     TIMSK |= (1 << OCIE1A); // zezwolenie na przerwanie timera 1 przy przepelnieniu
- 158:	89 b7       	in	r24, 0x39	; 57
- 15a:	80 61       	ori	r24, 0x10	; 16
- 15c:	89 bf       	out	0x39, r24	; 57
+ 1b2:	89 b7       	in	r24, 0x39	; 57
+ 1b4:	80 61       	ori	r24, 0x10	; 16
+ 1b6:	89 bf       	out	0x39, r24	; 57
 }
- 15e:	08 95       	ret
+ 1b8:	08 95       	ret
 
-00000160 <main>:
+000001ba <main>:
 int main(void)
 {
 	// inicjalizacja
 
 	// PB[0-5] jako wyjscia - do wyboru wyswietlacza
 	DDRB |= (1 << PB0) | (1 << PB1) | (1 << PB2) | (1 << PB3) | (1 << PB4) | (1 << PB5);
- 160:	87 b3       	in	r24, 0x17	; 23
- 162:	8f 63       	ori	r24, 0x3F	; 63
- 164:	87 bb       	out	0x17, r24	; 23
+ 1ba:	87 b3       	in	r24, 0x17	; 23
+ 1bc:	8f 63       	ori	r24, 0x3F	; 63
+ 1be:	87 bb       	out	0x17, r24	; 23
 	
 	// PC[0-6] jako wyjscia - sterowanie wyswietlaczem 7-segmentowym
 	DDRC |= (1 << PC0) | (1 << PC1) | (1 << PC2) | (1 << PC3) | (1 << PC4) | (1 << PC5) | (1 << PC6);
- 166:	84 b3       	in	r24, 0x14	; 20
- 168:	8f 67       	ori	r24, 0x7F	; 127
- 16a:	84 bb       	out	0x14, r24	; 20
+ 1c0:	84 b3       	in	r24, 0x14	; 20
+ 1c2:	8f 67       	ori	r24, 0x7F	; 127
+ 1c4:	84 bb       	out	0x14, r24	; 20
 
-	buffer[0] = -1;
- 16c:	8f ef       	ldi	r24, 0xFF	; 255
- 16e:	80 93 6b 00 	sts	0x006B, r24
-	buffer[1] = 10;
- 172:	8a e0       	ldi	r24, 0x0A	; 10
- 174:	80 93 6c 00 	sts	0x006C, r24
-	buffer[2] = -50;
- 178:	8e ec       	ldi	r24, 0xCE	; 206
- 17a:	80 93 6d 00 	sts	0x006D, r24
-	buffer[3] = 50;
- 17e:	82 e3       	ldi	r24, 0x32	; 50
- 180:	80 93 6e 00 	sts	0x006E, r24
-	buffer[4] = 0;
- 184:	10 92 6f 00 	sts	0x006F, r1
-	buffer[5] = 0;
- 188:	10 92 70 00 	sts	0x0070, r1
+	current_time.seconds = 57;
+ 1c6:	89 e3       	ldi	r24, 0x39	; 57
+ 1c8:	80 93 6b 00 	sts	0x006B, r24
+	current_time.minutes = 59;
+ 1cc:	8b e3       	ldi	r24, 0x3B	; 59
+ 1ce:	80 93 6c 00 	sts	0x006C, r24
+	current_time.hours = 23;
+ 1d2:	87 e1       	ldi	r24, 0x17	; 23
+ 1d4:	80 93 6d 00 	sts	0x006D, r24
 
 	init_timer0();
- 18c:	0e 94 49 00 	call	0x92	; 0x92 <init_timer0>
+ 1d8:	0e 94 76 00 	call	0xec	; 0xec <init_timer0>
 	init_timer1();
- 190:	0e 94 a2 00 	call	0x144	; 0x144 <init_timer1>
+ 1dc:	0e 94 cf 00 	call	0x19e	; 0x19e <init_timer1>
 
 	sei(); // zezwolenie globalne na przerwania
- 194:	78 94       	sei
- 196:	ff cf       	rjmp	.-2      	; 0x196 <main+0x36>
+ 1e0:	78 94       	sei
+ 1e2:	ff cf       	rjmp	.-2      	; 0x1e2 <main+0x28>
 
-00000198 <__vector_7>:
+000001e4 <__vector_7>:
 
 /****************************************************************/
 // obsluga przerwania timer1 (do odmierzania sekund)
 /****************************************************************/
 ISR(TIMER1_COMPA_vect)
 {
- 198:	1f 92       	push	r1
- 19a:	0f 92       	push	r0
- 19c:	0f b6       	in	r0, 0x3f	; 63
- 19e:	0f 92       	push	r0
- 1a0:	11 24       	eor	r1, r1
- 1a2:	5f 93       	push	r21
- 1a4:	6f 93       	push	r22
- 1a6:	7f 93       	push	r23
- 1a8:	8f 93       	push	r24
- 1aa:	9f 93       	push	r25
- 1ac:	af 93       	push	r26
- 1ae:	bf 93       	push	r27
-	buffer[5] = (buffer[5] + 1) % 10; // zwiększanie sekund na ostatnim wyświetlaczu
- 1b0:	80 91 70 00 	lds	r24, 0x0070
- 1b4:	90 e0       	ldi	r25, 0x00	; 0
- 1b6:	01 96       	adiw	r24, 0x01	; 1
- 1b8:	6a e0       	ldi	r22, 0x0A	; 10
- 1ba:	70 e0       	ldi	r23, 0x00	; 0
- 1bc:	0e 94 ee 00 	call	0x1dc	; 0x1dc <__divmodhi4>
- 1c0:	80 93 70 00 	sts	0x0070, r24
+ 1e4:	1f 92       	push	r1
+ 1e6:	0f 92       	push	r0
+ 1e8:	0f b6       	in	r0, 0x3f	; 63
+ 1ea:	0f 92       	push	r0
+ 1ec:	11 24       	eor	r1, r1
+ 1ee:	2f 93       	push	r18
+ 1f0:	3f 93       	push	r19
+ 1f2:	4f 93       	push	r20
+ 1f4:	5f 93       	push	r21
+ 1f6:	6f 93       	push	r22
+ 1f8:	7f 93       	push	r23
+ 1fa:	8f 93       	push	r24
+ 1fc:	9f 93       	push	r25
+ 1fe:	af 93       	push	r26
+ 200:	bf 93       	push	r27
+ 202:	ef 93       	push	r30
+ 204:	ff 93       	push	r31
+	buffer[0] = current_time.hours / 10;
+ 206:	20 91 6d 00 	lds	r18, 0x006D
+ 20a:	82 2f       	mov	r24, r18
+ 20c:	6a e0       	ldi	r22, 0x0A	; 10
+ 20e:	0e 94 3b 01 	call	0x276	; 0x276 <__udivmodqi4>
+ 212:	80 93 6e 00 	sts	0x006E, r24
+	buffer[1] = current_time.hours % 10;
+ 216:	82 2f       	mov	r24, r18
+ 218:	0e 94 3b 01 	call	0x276	; 0x276 <__udivmodqi4>
+ 21c:	90 93 6f 00 	sts	0x006F, r25
+	buffer[2] = current_time.minutes / 10;
+ 220:	20 91 6c 00 	lds	r18, 0x006C
+ 224:	82 2f       	mov	r24, r18
+ 226:	0e 94 3b 01 	call	0x276	; 0x276 <__udivmodqi4>
+ 22a:	80 93 70 00 	sts	0x0070, r24
+	buffer[3] = current_time.minutes % 10;
+ 22e:	82 2f       	mov	r24, r18
+ 230:	0e 94 3b 01 	call	0x276	; 0x276 <__udivmodqi4>
+ 234:	90 93 71 00 	sts	0x0071, r25
+	buffer[4] = current_time.seconds / 10;
+ 238:	20 91 6b 00 	lds	r18, 0x006B
+ 23c:	82 2f       	mov	r24, r18
+ 23e:	0e 94 3b 01 	call	0x276	; 0x276 <__udivmodqi4>
+ 242:	80 93 72 00 	sts	0x0072, r24
+	buffer[5] = current_time.seconds % 10;
+ 246:	82 2f       	mov	r24, r18
+ 248:	0e 94 3b 01 	call	0x276	; 0x276 <__udivmodqi4>
+ 24c:	90 93 73 00 	sts	0x0073, r25
+
+	add_second();
+ 250:	0e 94 5e 00 	call	0xbc	; 0xbc <add_second>
 }
- 1c4:	bf 91       	pop	r27
- 1c6:	af 91       	pop	r26
- 1c8:	9f 91       	pop	r25
- 1ca:	8f 91       	pop	r24
- 1cc:	7f 91       	pop	r23
- 1ce:	6f 91       	pop	r22
- 1d0:	5f 91       	pop	r21
- 1d2:	0f 90       	pop	r0
- 1d4:	0f be       	out	0x3f, r0	; 63
- 1d6:	0f 90       	pop	r0
- 1d8:	1f 90       	pop	r1
- 1da:	18 95       	reti
+ 254:	ff 91       	pop	r31
+ 256:	ef 91       	pop	r30
+ 258:	bf 91       	pop	r27
+ 25a:	af 91       	pop	r26
+ 25c:	9f 91       	pop	r25
+ 25e:	8f 91       	pop	r24
+ 260:	7f 91       	pop	r23
+ 262:	6f 91       	pop	r22
+ 264:	5f 91       	pop	r21
+ 266:	4f 91       	pop	r20
+ 268:	3f 91       	pop	r19
+ 26a:	2f 91       	pop	r18
+ 26c:	0f 90       	pop	r0
+ 26e:	0f be       	out	0x3f, r0	; 63
+ 270:	0f 90       	pop	r0
+ 272:	1f 90       	pop	r1
+ 274:	18 95       	reti
 
-000001dc <__divmodhi4>:
- 1dc:	97 fb       	bst	r25, 7
- 1de:	09 2e       	mov	r0, r25
- 1e0:	07 26       	eor	r0, r23
- 1e2:	0a d0       	rcall	.+20     	; 0x1f8 <__divmodhi4_neg1>
- 1e4:	77 fd       	sbrc	r23, 7
- 1e6:	04 d0       	rcall	.+8      	; 0x1f0 <__divmodhi4_neg2>
- 1e8:	0c d0       	rcall	.+24     	; 0x202 <__udivmodhi4>
- 1ea:	06 d0       	rcall	.+12     	; 0x1f8 <__divmodhi4_neg1>
- 1ec:	00 20       	and	r0, r0
- 1ee:	1a f4       	brpl	.+6      	; 0x1f6 <__divmodhi4_exit>
+00000276 <__udivmodqi4>:
+ 276:	99 1b       	sub	r25, r25
+ 278:	79 e0       	ldi	r23, 0x09	; 9
+ 27a:	04 c0       	rjmp	.+8      	; 0x284 <__udivmodqi4_ep>
 
-000001f0 <__divmodhi4_neg2>:
- 1f0:	70 95       	com	r23
- 1f2:	61 95       	neg	r22
- 1f4:	7f 4f       	sbci	r23, 0xFF	; 255
+0000027c <__udivmodqi4_loop>:
+ 27c:	99 1f       	adc	r25, r25
+ 27e:	96 17       	cp	r25, r22
+ 280:	08 f0       	brcs	.+2      	; 0x284 <__udivmodqi4_ep>
+ 282:	96 1b       	sub	r25, r22
 
-000001f6 <__divmodhi4_exit>:
- 1f6:	08 95       	ret
+00000284 <__udivmodqi4_ep>:
+ 284:	88 1f       	adc	r24, r24
+ 286:	7a 95       	dec	r23
+ 288:	c9 f7       	brne	.-14     	; 0x27c <__udivmodqi4_loop>
+ 28a:	80 95       	com	r24
+ 28c:	08 95       	ret
 
-000001f8 <__divmodhi4_neg1>:
- 1f8:	f6 f7       	brtc	.-4      	; 0x1f6 <__divmodhi4_exit>
- 1fa:	90 95       	com	r25
- 1fc:	81 95       	neg	r24
- 1fe:	9f 4f       	sbci	r25, 0xFF	; 255
- 200:	08 95       	ret
+0000028e <__divmodhi4>:
+ 28e:	97 fb       	bst	r25, 7
+ 290:	09 2e       	mov	r0, r25
+ 292:	07 26       	eor	r0, r23
+ 294:	0a d0       	rcall	.+20     	; 0x2aa <__divmodhi4_neg1>
+ 296:	77 fd       	sbrc	r23, 7
+ 298:	04 d0       	rcall	.+8      	; 0x2a2 <__divmodhi4_neg2>
+ 29a:	0c d0       	rcall	.+24     	; 0x2b4 <__udivmodhi4>
+ 29c:	06 d0       	rcall	.+12     	; 0x2aa <__divmodhi4_neg1>
+ 29e:	00 20       	and	r0, r0
+ 2a0:	1a f4       	brpl	.+6      	; 0x2a8 <__divmodhi4_exit>
 
-00000202 <__udivmodhi4>:
- 202:	aa 1b       	sub	r26, r26
- 204:	bb 1b       	sub	r27, r27
- 206:	51 e1       	ldi	r21, 0x11	; 17
- 208:	07 c0       	rjmp	.+14     	; 0x218 <__udivmodhi4_ep>
+000002a2 <__divmodhi4_neg2>:
+ 2a2:	70 95       	com	r23
+ 2a4:	61 95       	neg	r22
+ 2a6:	7f 4f       	sbci	r23, 0xFF	; 255
 
-0000020a <__udivmodhi4_loop>:
- 20a:	aa 1f       	adc	r26, r26
- 20c:	bb 1f       	adc	r27, r27
- 20e:	a6 17       	cp	r26, r22
- 210:	b7 07       	cpc	r27, r23
- 212:	10 f0       	brcs	.+4      	; 0x218 <__udivmodhi4_ep>
- 214:	a6 1b       	sub	r26, r22
- 216:	b7 0b       	sbc	r27, r23
+000002a8 <__divmodhi4_exit>:
+ 2a8:	08 95       	ret
 
-00000218 <__udivmodhi4_ep>:
- 218:	88 1f       	adc	r24, r24
- 21a:	99 1f       	adc	r25, r25
- 21c:	5a 95       	dec	r21
- 21e:	a9 f7       	brne	.-22     	; 0x20a <__udivmodhi4_loop>
- 220:	80 95       	com	r24
- 222:	90 95       	com	r25
- 224:	bc 01       	movw	r22, r24
- 226:	cd 01       	movw	r24, r26
- 228:	08 95       	ret
+000002aa <__divmodhi4_neg1>:
+ 2aa:	f6 f7       	brtc	.-4      	; 0x2a8 <__divmodhi4_exit>
+ 2ac:	90 95       	com	r25
+ 2ae:	81 95       	neg	r24
+ 2b0:	9f 4f       	sbci	r25, 0xFF	; 255
+ 2b2:	08 95       	ret
 
-0000022a <_exit>:
- 22a:	f8 94       	cli
+000002b4 <__udivmodhi4>:
+ 2b4:	aa 1b       	sub	r26, r26
+ 2b6:	bb 1b       	sub	r27, r27
+ 2b8:	51 e1       	ldi	r21, 0x11	; 17
+ 2ba:	07 c0       	rjmp	.+14     	; 0x2ca <__udivmodhi4_ep>
 
-0000022c <__stop_program>:
- 22c:	ff cf       	rjmp	.-2      	; 0x22c <__stop_program>
+000002bc <__udivmodhi4_loop>:
+ 2bc:	aa 1f       	adc	r26, r26
+ 2be:	bb 1f       	adc	r27, r27
+ 2c0:	a6 17       	cp	r26, r22
+ 2c2:	b7 07       	cpc	r27, r23
+ 2c4:	10 f0       	brcs	.+4      	; 0x2ca <__udivmodhi4_ep>
+ 2c6:	a6 1b       	sub	r26, r22
+ 2c8:	b7 0b       	sbc	r27, r23
+
+000002ca <__udivmodhi4_ep>:
+ 2ca:	88 1f       	adc	r24, r24
+ 2cc:	99 1f       	adc	r25, r25
+ 2ce:	5a 95       	dec	r21
+ 2d0:	a9 f7       	brne	.-22     	; 0x2bc <__udivmodhi4_loop>
+ 2d2:	80 95       	com	r24
+ 2d4:	90 95       	com	r25
+ 2d6:	bc 01       	movw	r22, r24
+ 2d8:	cd 01       	movw	r24, r26
+ 2da:	08 95       	ret
+
+000002dc <_exit>:
+ 2dc:	f8 94       	cli
+
+000002de <__stop_program>:
+ 2de:	ff cf       	rjmp	.-2      	; 0x2de <__stop_program>

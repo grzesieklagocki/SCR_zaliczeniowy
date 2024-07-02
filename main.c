@@ -26,10 +26,21 @@ volatile const uint8_t segments[10] =
 	(1 << PC0) | (1 << PC1) | (1 << PC2) | (1 << PC3) | 			 (1 << PC5) | (1 << PC6)  // 9
 };
 
+struct time
+{
+	uint8_t seconds,
+		minutes,
+		hours;
+} current_time;
+
 
 // deklaracje funkcji
 void init_timer0(void);
 void init_timer1(void);
+
+void add_second(void);
+void add_minute(void);
+void add_hour(void);
 
 /****************************************************************/
 // funkcja glowna programu
@@ -44,12 +55,9 @@ int main(void)
 	// PC[0-6] jako wyjscia - sterowanie wyswietlaczem 7-segmentowym
 	DDRC |= (1 << PC0) | (1 << PC1) | (1 << PC2) | (1 << PC3) | (1 << PC4) | (1 << PC5) | (1 << PC6);
 
-	buffer[0] = -1;
-	buffer[1] = 10;
-	buffer[2] = -50;
-	buffer[3] = 50;
-	buffer[4] = 0;
-	buffer[5] = 0;
+	current_time.seconds = 57;
+	current_time.minutes = 59;
+	current_time.hours = 23;
 
 	init_timer0();
 	init_timer1();
@@ -62,6 +70,45 @@ int main(void)
 	}
 	
 	return 0;
+}
+
+/****************************************************************/
+// funkcja zwiekszajaca czas o 1s
+/****************************************************************/
+void add_second(void)
+{
+	if (current_time.seconds < 59)
+		current_time.seconds++;
+	else
+	{
+		current_time.seconds = 0;
+		add_minute();
+	}
+}
+
+/****************************************************************/
+// funkcja zwiekszajaca czas o 1m
+/****************************************************************/
+void add_minute(void)
+{
+	if (current_time.minutes < 59)
+		current_time.minutes++;
+	else
+	{
+		current_time.minutes = 0;
+		add_hour();
+	}
+}
+
+/****************************************************************/
+// funkcja zwiekszajaca czas o 1h
+/****************************************************************/
+void add_hour(void)
+{
+	if (current_time.hours < 23)
+		current_time.hours++;
+	else
+		current_time.hours = 0;
 }
 
 /****************************************************************/
@@ -101,6 +148,13 @@ void init_timer1(void)
 /****************************************************************/
 ISR(TIMER1_COMPA_vect)
 {
-	buffer[5] = (buffer[5] + 1) % 10; // zwiększanie sekund na ostatnim wyświetlaczu
+	buffer[0] = current_time.hours / 10;
+	buffer[1] = current_time.hours % 10;
+	buffer[2] = current_time.minutes / 10;
+	buffer[3] = current_time.minutes % 10;
+	buffer[4] = current_time.seconds / 10;
+	buffer[5] = current_time.seconds % 10;
+
+	add_second();
 }
 
