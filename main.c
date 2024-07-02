@@ -29,6 +29,7 @@ volatile const uint8_t segments[10] =
 
 // deklaracje funkcji
 void init_timer0(void);
+void init_timer1(void);
 
 /****************************************************************/
 // funkcja glowna programu
@@ -45,14 +46,15 @@ int main(void)
 
 	buffer[0] = -1;
 	buffer[1] = 10;
-	buffer[2] = 7;
-	buffer[3] = 7;
-	buffer[4] = 1;
-	buffer[5] = 6;
+	buffer[2] = -50;
+	buffer[3] = 50;
+	buffer[4] = 0;
+	buffer[5] = 0;
 
 	init_timer0();
+	init_timer1();
 
-	sei();
+	sei(); // zezwolenie globalne na przerwania
 
 	while(1)
 	{
@@ -69,16 +71,36 @@ void init_timer0(void)
 {
     TCCR0 |= (1 << WGM01); // tryb CTC
     TCCR0 |= (1 << CS02) | (1 << CS00); // preskaler 1024
-	OCR0 = 20;
+	OCR0 = 171; // (1 / czestotliwosc) / (1 / (F_CPU / preskaler))) - 1
     TIMSK |= (1 << OCIE0); // zezwolenie na przerwanie timera 0
 }
 
 /****************************************************************/
-// obsluga przerwania timer0
+// obsluga przerwania timer0 (do multipleksowania)
 /****************************************************************/
 ISR(TIMER0_COMP_vect)
 {
 	SELECT_DISPLAY(cursor);	  // aktywacja wyswietlacza
 	SET_DIGIT(buffer[cursor]); // ustawienie liczby na wyswietlaczu
-	CURSOR_NEXT;
+	CURSOR_NEXT; // przejscie do nastepnego wyswietlacza
 }
+
+/****************************************************************/
+// inicjalizacja timera 1 i ustawienie na 1 Hz (do odmierzania sekund)
+/****************************************************************/
+void init_timer1(void)
+{
+	TCCR1B |=  (1 << WGM12); // tryb CTC
+    TCCR1B |= (1 << CS12); // preskaler 256
+	OCR1A = 31249; // (1 / czestotliwosc) / (1 / (F_CPU / preskaler))) - 1
+    TIMSK |= (1 << OCIE1A); // zezwolenie na przerwanie timera 1 przy przepelnieniu
+}
+
+/****************************************************************/
+// obsluga przerwania timer1 (do odmierzania sekund)
+/****************************************************************/
+ISR(TIMER1_COMPA_vect)
+{
+	buffer[5] = (buffer[5] + 1) % 10; // zwiększanie sekund na ostatnim wyświetlaczu
+}
+
