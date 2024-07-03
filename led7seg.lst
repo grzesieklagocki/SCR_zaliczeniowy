@@ -145,6 +145,7 @@
  192               	.Letext0:
 DEFINED SYMBOLS
                             *ABS*:00000000 led7seg.c
+<<<<<<< HEAD
 C:\Users\Grzegorz\AppData\Local\Temp/ccjVJeYU.s:2      *ABS*:0000003f __SREG__
 C:\Users\Grzegorz\AppData\Local\Temp/ccjVJeYU.s:3      *ABS*:0000003e __SP_H__
 C:\Users\Grzegorz\AppData\Local\Temp/ccjVJeYU.s:4      *ABS*:0000003d __SP_L__
@@ -156,6 +157,19 @@ C:\Users\Grzegorz\AppData\Local\Temp/ccjVJeYU.s:53     .text:00000024 __vector_1
 C:\Users\Grzegorz\AppData\Local\Temp/ccjVJeYU.s:142    .bss:00000000 cursor
                             *COM*:00000006 buffer
 C:\Users\Grzegorz\AppData\Local\Temp/ccjVJeYU.s:148    .data:00000000 segments
+=======
+C:\Users\Grzegorz\AppData\Local\Temp/ccuK7p7A.s:2      *ABS*:0000003f __SREG__
+C:\Users\Grzegorz\AppData\Local\Temp/ccuK7p7A.s:3      *ABS*:0000003e __SP_H__
+C:\Users\Grzegorz\AppData\Local\Temp/ccuK7p7A.s:4      *ABS*:0000003d __SP_L__
+C:\Users\Grzegorz\AppData\Local\Temp/ccuK7p7A.s:5      *ABS*:00000034 __CCP__
+C:\Users\Grzegorz\AppData\Local\Temp/ccuK7p7A.s:6      *ABS*:00000000 __tmp_reg__
+C:\Users\Grzegorz\AppData\Local\Temp/ccuK7p7A.s:7      *ABS*:00000001 __zero_reg__
+C:\Users\Grzegorz\AppData\Local\Temp/ccuK7p7A.s:18     .text:00000000 init_led7seg
+C:\Users\Grzegorz\AppData\Local\Temp/ccuK7p7A.s:53     .text:00000024 __vector_10
+C:\Users\Grzegorz\AppData\Local\Temp/ccuK7p7A.s:142    .bss:00000000 cursor
+                            *COM*:00000006 buffer
+C:\Users\Grzegorz\AppData\Local\Temp/ccuK7p7A.s:148    .data:00000000 segments
+>>>>>>> 7b0148d945b451460632c52915bf9b38c43b29e6
 
 UNDEFINED SYMBOLS
 __divmodhi4
