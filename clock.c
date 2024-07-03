@@ -5,12 +5,13 @@
 #include "led7seg.h"
 
 
+// struktura do przechowywania aktualnego czasu
 struct time
 {
 	uint8_t seconds,
 		minutes,
 		hours;
-} current_time;
+} current_time; // zmienna przechowujaca aktualny czas
 
 
 /****************************************************************/
