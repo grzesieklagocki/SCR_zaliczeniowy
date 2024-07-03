@@ -1,6 +1,6 @@
 # Hey Emacs, this is a -*- makefile -*-
 #----------------------------------------------------------------------------
-# WinAVR Makefile Template written by Eric B. Weddington, Jörg Wunsch, et al.
+# WinAVR Makefile Template written by Eric B. Weddington, Jï¿½rg Wunsch, et al.
 #
 # Released to the Public Domain
 #
@@ -80,7 +80,7 @@ OBJDIR = .
 
 
 # List C source files here. (C dependencies are automatically generated.)
-SRC = $(TARGET).c  ../SCR_zaliczeniowy/led7seg.c
+SRC = $(TARGET).c  led7seg.c clock.c
 
 
 # List C++ source files here. (C dependencies are automatically generated.)
@@ -615,5 +615,7 @@ $(shell mkdir $(OBJDIR) 2>/dev/null)
 .PHONY : all begin finish end sizebefore sizeafter gccversion \
 build elf hex eep lss sym coff extcoff \
 clean clean_list program debug gdb-config
+
+
 
 

@@ -3,7 +3,7 @@
 
 extern volatile uint8_t buffer[6]; // bufor cyfr dla wyswietlaczy
 
-// inicjalizacja timera 0 i ustawienie na 180 Hz (do multipleksowania)
-void init_led7seg(void);
+
+void init_led7seg(void); // inicjalizacja wyswietlaczy
 
 #endif
