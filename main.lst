@@ -6,236 +6,48 @@
    6               	__tmp_reg__ = 0
    7               	__zero_reg__ = 1
   15               	.Ltext0:
-  16               	.global	add_minute
-  18               	add_minute:
-  19               	.LFB4:
+  16               	.global	main
+  18               	main:
+  19               	.LFB2:
   20               	.LM1:
   21               	/* prologue: function */
   22               	/* frame size = 0 */
   23               	.LM2:
-  24 0000 8091 0000 		lds r24,current_time+1
-  25 0004 8B33      		cpi r24,lo8(59)
-  26 0006 00F4      		brsh .L2
-  27               	.LM3:
-  28 0008 8F5F      		subi r24,lo8(-(1))
-  29 000a 8093 0000 		sts current_time+1,r24
-  30 000e 0895      		ret
-  31               	.L2:
-  32               	.LM4:
-  33 0010 1092 0000 		sts current_time+1,__zero_reg__
-  34               	.LBB4:
-  35               	.LBB5:
-  36               	.LM5:
-  37 0014 8091 0000 		lds r24,current_time+2
-  38 0018 8731      		cpi r24,lo8(23)
-  39 001a 00F4      		brsh .L4
-  40               	.LM6:
-  41 001c 8F5F      		subi r24,lo8(-(1))
-  42 001e 8093 0000 		sts current_time+2,r24
-  43 0022 0895      		ret
-  44               	.L4:
-  45               	.LM7:
-  46 0024 1092 0000 		sts current_time+2,__zero_reg__
-  47 0028 0895      		ret
-  48               	.LBE5:
-  49               	.LBE4:
-  50               	.LFE4:
-  52               	.global	add_second
-  54               	add_second:
-  55               	.LFB3:
-  56               	.LM8:
-  57               	/* prologue: function */
-  58               	/* frame size = 0 */
-  59               	.LM9:
-  60 002a 8091 0000 		lds r24,current_time
-  61 002e 8B33      		cpi r24,lo8(59)
-  62 0030 00F4      		brsh .L7
-  63               	.LM10:
-  64 0032 8F5F      		subi r24,lo8(-(1))
-  65 0034 8093 0000 		sts current_time,r24
-  66 0038 0895      		ret
-  67               	.L7:
-  68               	.LM11:
-  69 003a 1092 0000 		sts current_time,__zero_reg__
-  70               	.LM12:
-  71 003e 0E94 0000 		call add_minute
-  72 0042 0895      		ret
-  73               	.LFE3:
-  75               	.global	add_hour
-  77               	add_hour:
-  78               	.LFB5:
-  79               	.LM13:
-  80               	/* prologue: function */
-  81               	/* frame size = 0 */
-  82               	.LM14:
-  83 0044 8091 0000 		lds r24,current_time+2
-  84 0048 8731      		cpi r24,lo8(23)
-  85 004a 00F4      		brsh .L11
-  86               	.LM15:
-  87 004c 8F5F      		subi r24,lo8(-(1))
-  88 004e 8093 0000 		sts current_time+2,r24
-  89 0052 0895      		ret
-  90               	.L11:
-  91               	.LM16:
-  92 0054 1092 0000 		sts current_time+2,__zero_reg__
-  93 0058 0895      		ret
-  94               	.LFE5:
-  96               	.global	init_timer1
-  98               	init_timer1:
-  99               	.LFB6:
- 100               	.LM17:
- 101               	/* prologue: function */
- 102               	/* frame size = 0 */
- 103               	.LM18:
- 104 005a 8EB5      		in r24,78-32
- 105 005c 8860      		ori r24,lo8(8)
- 106 005e 8EBD      		out 78-32,r24
- 107               	.LM19:
- 108 0060 8EB5      		in r24,78-32
- 109 0062 8460      		ori r24,lo8(4)
- 110 0064 8EBD      		out 78-32,r24
- 111               	.LM20:
- 112 0066 81E1      		ldi r24,lo8(31249)
- 113 0068 9AE7      		ldi r25,hi8(31249)
- 114 006a 9BBD      		out (74)+1-32,r25
- 115 006c 8ABD      		out 74-32,r24
- 116               	.LM21:
- 117 006e 89B7      		in r24,89-32
- 118 0070 8061      		ori r24,lo8(16)
- 119 0072 89BF      		out 89-32,r24
- 120               	/* epilogue start */
- 121               	.LM22:
- 122 0074 0895      		ret
- 123               	.LFE6:
- 125               	.global	__vector_7
- 127               	__vector_7:
- 128               	.LFB7:
- 129               	.LM23:
- 130 0076 1F92      		push __zero_reg__
- 131 0078 0F92      		push r0
- 132 007a 0FB6      		in r0,__SREG__
- 133 007c 0F92      		push r0
- 134 007e 1124      		clr __zero_reg__
- 135 0080 2F93      		push r18
- 136 0082 3F93      		push r19
- 137 0084 4F93      		push r20
- 138 0086 5F93      		push r21
- 139 0088 6F93      		push r22
- 140 008a 7F93      		push r23
- 141 008c 8F93      		push r24
- 142 008e 9F93      		push r25
- 143 0090 AF93      		push r26
- 144 0092 BF93      		push r27
- 145 0094 EF93      		push r30
- 146 0096 FF93      		push r31
- 147               	/* prologue: Signal */
- 148               	/* frame size = 0 */
- 149               	.LM24:
- 150 0098 2091 0000 		lds r18,current_time+2
- 151 009c 822F      		mov r24,r18
- 152 009e 6AE0      		ldi r22,lo8(10)
- 153 00a0 0E94 0000 		call __udivmodqi4
- 154 00a4 8093 0000 		sts buffer,r24
- 155               	.LM25:
- 156 00a8 822F      		mov r24,r18
- 157 00aa 0E94 0000 		call __udivmodqi4
- 158 00ae 9093 0000 		sts buffer+1,r25
- 159               	.LM26:
- 160 00b2 2091 0000 		lds r18,current_time+1
- 161 00b6 822F      		mov r24,r18
- 162 00b8 0E94 0000 		call __udivmodqi4
- 163 00bc 8093 0000 		sts buffer+2,r24
- 164               	.LM27:
- 165 00c0 822F      		mov r24,r18
- 166 00c2 0E94 0000 		call __udivmodqi4
- 167 00c6 9093 0000 		sts buffer+3,r25
- 168               	.LM28:
- 169 00ca 2091 0000 		lds r18,current_time
- 170 00ce 822F      		mov r24,r18
- 171 00d0 0E94 0000 		call __udivmodqi4
- 172 00d4 8093 0000 		sts buffer+4,r24
- 173               	.LM29:
- 174 00d8 822F      		mov r24,r18
- 175 00da 0E94 0000 		call __udivmodqi4
- 176 00de 9093 0000 		sts buffer+5,r25
- 177               	.LM30:
- 178 00e2 0E94 0000 		call add_second
- 179               	/* epilogue start */
- 180               	.LM31:
- 181 00e6 FF91      		pop r31
- 182 00e8 EF91      		pop r30
- 183 00ea BF91      		pop r27
- 184 00ec AF91      		pop r26
- 185 00ee 9F91      		pop r25
- 186 00f0 8F91      		pop r24
- 187 00f2 7F91      		pop r23
- 188 00f4 6F91      		pop r22
- 189 00f6 5F91      		pop r21
- 190 00f8 4F91      		pop r20
- 191 00fa 3F91      		pop r19
- 192 00fc 2F91      		pop r18
- 193 00fe 0F90      		pop r0
- 194 0100 0FBE      		out __SREG__,r0
- 195 0102 0F90      		pop r0
- 196 0104 1F90      		pop __zero_reg__
- 197 0106 1895      		reti
- 198               	.LFE7:
- 200               	.global	main
- 202               	main:
- 203               	.LFB2:
- 204               	.LM32:
- 205               	/* prologue: function */
- 206               	/* frame size = 0 */
- 207               	.LM33:
- 208 0108 87B3      		in r24,55-32
- 209 010a 8F63      		ori r24,lo8(63)
- 210 010c 87BB      		out 55-32,r24
- 211               	.LM34:
- 212 010e 84B3      		in r24,52-32
- 213 0110 8F67      		ori r24,lo8(127)
- 214 0112 84BB      		out 52-32,r24
- 215               	.LM35:
- 216 0114 89E3      		ldi r24,lo8(57)
- 217 0116 8093 0000 		sts current_time,r24
- 218               	.LM36:
- 219 011a 8BE3      		ldi r24,lo8(59)
- 220 011c 8093 0000 		sts current_time+1,r24
- 221               	.LM37:
- 222 0120 87E1      		ldi r24,lo8(23)
- 223 0122 8093 0000 		sts current_time+2,r24
- 224               	.LM38:
- 225 0126 0E94 0000 		call init_led7seg
- 226               	.LM39:
- 227 012a 0E94 0000 		call init_timer1
- 228               	.LM40:
- 229               	/* #APP */
- 230               	 ;  42 "main.c" 1
- 231 012e 7894      		sei
- 232               	 ;  0 "" 2
- 233               	/* #NOAPP */
- 234               	.L19:
- 235 0130 00C0      		rjmp .L19
- 236               	.LFE2:
- 238               		.comm current_time,3,1
- 303               	.Letext0:
+  24 0000 0E94 0000 		call init_led7seg
+  25               	.LM3:
+  26 0004 0E94 0000 		call init_clock
+  27               	.LM4:
+  28 0008 89E3      		ldi r24,lo8(57)
+  29 000a 0E94 0000 		call clock_set_seconds
+  30               	.LM5:
+  31 000e 8BE3      		ldi r24,lo8(59)
+  32 0010 0E94 0000 		call clock_set_minutes
+  33               	.LM6:
+  34 0014 87E1      		ldi r24,lo8(23)
+  35 0016 0E94 0000 		call clock_set_hours
+  36               	.LM7:
+  37               	/* #APP */
+  38               	 ;  21 "main.c" 1
+  39 001a 7894      		sei
+  40               	 ;  0 "" 2
+  41               	/* #NOAPP */
+  42               	.L2:
+  43 001c 00C0      		rjmp .L2
+  44               	.LFE2:
+  70               	.Letext0:
 DEFINED SYMBOLS
                             *ABS*:00000000 main.c
-C:\Users\Grzegorz\AppData\Local\Temp/cciW54SO.s:2      *ABS*:0000003f __SREG__
-C:\Users\Grzegorz\AppData\Local\Temp/cciW54SO.s:3      *ABS*:0000003e __SP_H__
-C:\Users\Grzegorz\AppData\Local\Temp/cciW54SO.s:4      *ABS*:0000003d __SP_L__
-C:\Users\Grzegorz\AppData\Local\Temp/cciW54SO.s:5      *ABS*:00000034 __CCP__
-C:\Users\Grzegorz\AppData\Local\Temp/cciW54SO.s:6      *ABS*:00000000 __tmp_reg__
-C:\Users\Grzegorz\AppData\Local\Temp/cciW54SO.s:7      *ABS*:00000001 __zero_reg__
-C:\Users\Grzegorz\AppData\Local\Temp/cciW54SO.s:18     .text:00000000 add_minute
-                            *COM*:00000003 current_time
-C:\Users\Grzegorz\AppData\Local\Temp/cciW54SO.s:54     .text:0000002a add_second
-C:\Users\Grzegorz\AppData\Local\Temp/cciW54SO.s:77     .text:00000044 add_hour
-C:\Users\Grzegorz\AppData\Local\Temp/cciW54SO.s:98     .text:0000005a init_timer1
-C:\Users\Grzegorz\AppData\Local\Temp/cciW54SO.s:127    .text:00000076 __vector_7
-C:\Users\Grzegorz\AppData\Local\Temp/cciW54SO.s:202    .text:00000108 main
+C:\Users\Grzegorz\AppData\Local\Temp/cctskV2O.s:2      *ABS*:0000003f __SREG__
+C:\Users\Grzegorz\AppData\Local\Temp/cctskV2O.s:3      *ABS*:0000003e __SP_H__
+C:\Users\Grzegorz\AppData\Local\Temp/cctskV2O.s:4      *ABS*:0000003d __SP_L__
+C:\Users\Grzegorz\AppData\Local\Temp/cctskV2O.s:5      *ABS*:00000034 __CCP__
+C:\Users\Grzegorz\AppData\Local\Temp/cctskV2O.s:6      *ABS*:00000000 __tmp_reg__
+C:\Users\Grzegorz\AppData\Local\Temp/cctskV2O.s:7      *ABS*:00000001 __zero_reg__
+C:\Users\Grzegorz\AppData\Local\Temp/cctskV2O.s:18     .text:00000000 main
 
 UNDEFINED SYMBOLS
-__udivmodqi4
-buffer
 init_led7seg
-__do_clear_bss
+init_clock
+clock_set_seconds
+clock_set_minutes
+clock_set_hours

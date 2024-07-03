@@ -13,141 +13,149 @@
   21               	/* prologue: function */
   22               	/* frame size = 0 */
   23               	.LM2:
-  24 0000 83B7      		in r24,83-32
-  25 0002 8860      		ori r24,lo8(8)
-  26 0004 83BF      		out 83-32,r24
+  24 0000 87B3      		in r24,55-32
+  25 0002 8F63      		ori r24,lo8(63)
+  26 0004 87BB      		out 55-32,r24
   27               	.LM3:
-  28 0006 83B7      		in r24,83-32
-  29 0008 8560      		ori r24,lo8(5)
-  30 000a 83BF      		out 83-32,r24
+  28 0006 84B3      		in r24,52-32
+  29 0008 8F67      		ori r24,lo8(127)
+  30 000a 84BB      		out 52-32,r24
   31               	.LM4:
-  32 000c 8BEA      		ldi r24,lo8(-85)
-  33 000e 8CBF      		out 92-32,r24
-  34               	.LM5:
-  35 0010 89B7      		in r24,89-32
-  36 0012 8260      		ori r24,lo8(2)
-  37 0014 89BF      		out 89-32,r24
-  38               	/* epilogue start */
+  32 000c 83B7      		in r24,83-32
+  33 000e 8860      		ori r24,lo8(8)
+  34 0010 83BF      		out 83-32,r24
+  35               	.LM5:
+  36 0012 83B7      		in r24,83-32
+  37 0014 8560      		ori r24,lo8(5)
+  38 0016 83BF      		out 83-32,r24
   39               	.LM6:
-  40 0016 0895      		ret
-  41               	.LFE2:
-  43               	.global	__vector_10
-  45               	__vector_10:
-  46               	.LFB3:
-  47               	.LM7:
-  48 0018 1F92      		push __zero_reg__
-  49 001a 0F92      		push r0
-  50 001c 0FB6      		in r0,__SREG__
-  51 001e 0F92      		push r0
-  52 0020 1124      		clr __zero_reg__
-  53 0022 2F93      		push r18
-  54 0024 5F93      		push r21
-  55 0026 6F93      		push r22
-  56 0028 7F93      		push r23
-  57 002a 8F93      		push r24
-  58 002c 9F93      		push r25
-  59 002e AF93      		push r26
-  60 0030 BF93      		push r27
-  61 0032 EF93      		push r30
-  62 0034 FF93      		push r31
-  63               	/* prologue: Signal */
-  64               	/* frame size = 0 */
-  65               	.LM8:
-  66 0036 2091 0000 		lds r18,cursor
-  67 003a 81E0      		ldi r24,lo8(1)
-  68 003c 90E0      		ldi r25,hi8(1)
-  69 003e 00C0      		rjmp 2f
-  70 0040 880F      	1:	lsl r24
-  71 0042 991F      		rol r25
-  72 0044 2A95      	2:	dec r18
-  73 0046 02F4      		brpl 1b
-  74 0048 88BB      		out 56-32,r24
-  75               	.LM9:
-  76 004a E091 0000 		lds r30,cursor
-  77 004e F0E0      		ldi r31,lo8(0)
-  78 0050 E050      		subi r30,lo8(-(buffer))
-  79 0052 F040      		sbci r31,hi8(-(buffer))
-  80 0054 E081      		ld r30,Z
-  81 0056 E091 0000 		lds r30,cursor
-  82 005a F0E0      		ldi r31,lo8(0)
-  83 005c E050      		subi r30,lo8(-(buffer))
-  84 005e F040      		sbci r31,hi8(-(buffer))
-  85 0060 8081      		ld r24,Z
-  86 0062 8A30      		cpi r24,lo8(10)
-  87 0064 00F0      		brlo .L4
-  88 0066 E0E0      		ldi r30,lo8(0)
-  89 0068 00C0      		rjmp .L5
-  90               	.L4:
-  91 006a E091 0000 		lds r30,cursor
-  92 006e F0E0      		ldi r31,lo8(0)
-  93 0070 E050      		subi r30,lo8(-(buffer))
-  94 0072 F040      		sbci r31,hi8(-(buffer))
-  95 0074 E081      		ld r30,Z
-  96 0076 F0E0      		ldi r31,lo8(0)
-  97 0078 E050      		subi r30,lo8(-(segments))
-  98 007a F040      		sbci r31,hi8(-(segments))
-  99 007c E081      		ld r30,Z
- 100               	.L5:
- 101 007e E5BB      		out 53-32,r30
- 102               	.LM10:
- 103 0080 8091 0000 		lds r24,cursor
- 104 0084 90E0      		ldi r25,lo8(0)
- 105 0086 0196      		adiw r24,1
- 106 0088 66E0      		ldi r22,lo8(6)
- 107 008a 70E0      		ldi r23,hi8(6)
- 108 008c 0E94 0000 		call __divmodhi4
- 109 0090 8093 0000 		sts cursor,r24
- 110               	/* epilogue start */
- 111               	.LM11:
- 112 0094 FF91      		pop r31
- 113 0096 EF91      		pop r30
- 114 0098 BF91      		pop r27
- 115 009a AF91      		pop r26
- 116 009c 9F91      		pop r25
- 117 009e 8F91      		pop r24
- 118 00a0 7F91      		pop r23
- 119 00a2 6F91      		pop r22
- 120 00a4 5F91      		pop r21
- 121 00a6 2F91      		pop r18
- 122 00a8 0F90      		pop r0
- 123 00aa 0FBE      		out __SREG__,r0
- 124 00ac 0F90      		pop r0
- 125 00ae 1F90      		pop __zero_reg__
- 126 00b0 1895      		reti
- 127               	.LFE3:
- 129               	.global	cursor
- 130               	.global	cursor
- 131               		.section .bss
- 134               	cursor:
- 135 0000 00        		.skip 1,0
- 136               	.global	segments
- 137               		.data
- 140               	segments:
- 141 0000 3F        		.byte	63
- 142 0001 06        		.byte	6
- 143 0002 5B        		.byte	91
- 144 0003 4F        		.byte	79
- 145 0004 66        		.byte	102
- 146 0005 6D        		.byte	109
- 147 0006 7D        		.byte	125
- 148 0007 07        		.byte	7
- 149 0008 7F        		.byte	127
- 150 0009 6F        		.byte	111
- 151               		.comm buffer,6,1
- 184               	.Letext0:
+  40 0018 8BEA      		ldi r24,lo8(-85)
+  41 001a 8CBF      		out 92-32,r24
+  42               	.LM7:
+  43 001c 89B7      		in r24,89-32
+  44 001e 8260      		ori r24,lo8(2)
+  45 0020 89BF      		out 89-32,r24
+  46               	/* epilogue start */
+  47               	.LM8:
+  48 0022 0895      		ret
+  49               	.LFE2:
+  51               	.global	__vector_10
+  53               	__vector_10:
+  54               	.LFB3:
+  55               	.LM9:
+  56 0024 1F92      		push __zero_reg__
+  57 0026 0F92      		push r0
+  58 0028 0FB6      		in r0,__SREG__
+  59 002a 0F92      		push r0
+  60 002c 1124      		clr __zero_reg__
+  61 002e 2F93      		push r18
+  62 0030 5F93      		push r21
+  63 0032 6F93      		push r22
+  64 0034 7F93      		push r23
+  65 0036 8F93      		push r24
+  66 0038 9F93      		push r25
+  67 003a AF93      		push r26
+  68 003c BF93      		push r27
+  69 003e EF93      		push r30
+  70 0040 FF93      		push r31
+  71               	/* prologue: Signal */
+  72               	/* frame size = 0 */
+  73               	.LM10:
+  74 0042 2091 0000 		lds r18,cursor
+  75 0046 81E0      		ldi r24,lo8(1)
+  76 0048 90E0      		ldi r25,hi8(1)
+  77 004a 00C0      		rjmp 2f
+  78 004c 880F      	1:	lsl r24
+  79 004e 991F      		rol r25
+  80 0050 2A95      	2:	dec r18
+  81 0052 02F4      		brpl 1b
+  82 0054 88BB      		out 56-32,r24
+  83               	.LM11:
+  84 0056 E091 0000 		lds r30,cursor
+  85 005a F0E0      		ldi r31,lo8(0)
+  86 005c E050      		subi r30,lo8(-(buffer))
+  87 005e F040      		sbci r31,hi8(-(buffer))
+  88 0060 E081      		ld r30,Z
+  89 0062 E091 0000 		lds r30,cursor
+  90 0066 F0E0      		ldi r31,lo8(0)
+  91 0068 E050      		subi r30,lo8(-(buffer))
+  92 006a F040      		sbci r31,hi8(-(buffer))
+  93 006c 8081      		ld r24,Z
+  94 006e 8A30      		cpi r24,lo8(10)
+  95 0070 00F0      		brlo .L4
+  96 0072 E0E0      		ldi r30,lo8(0)
+  97 0074 00C0      		rjmp .L5
+  98               	.L4:
+  99 0076 E091 0000 		lds r30,cursor
+ 100 007a F0E0      		ldi r31,lo8(0)
+ 101 007c E050      		subi r30,lo8(-(buffer))
+ 102 007e F040      		sbci r31,hi8(-(buffer))
+ 103 0080 E081      		ld r30,Z
+ 104 0082 F0E0      		ldi r31,lo8(0)
+ 105 0084 E050      		subi r30,lo8(-(segments))
+ 106 0086 F040      		sbci r31,hi8(-(segments))
+ 107 0088 E081      		ld r30,Z
+ 108               	.L5:
+ 109 008a E5BB      		out 53-32,r30
+ 110               	.LM12:
+ 111 008c 8091 0000 		lds r24,cursor
+ 112 0090 90E0      		ldi r25,lo8(0)
+ 113 0092 0196      		adiw r24,1
+ 114 0094 66E0      		ldi r22,lo8(6)
+ 115 0096 70E0      		ldi r23,hi8(6)
+ 116 0098 0E94 0000 		call __divmodhi4
+ 117 009c 8093 0000 		sts cursor,r24
+ 118               	/* epilogue start */
+ 119               	.LM13:
+ 120 00a0 FF91      		pop r31
+ 121 00a2 EF91      		pop r30
+ 122 00a4 BF91      		pop r27
+ 123 00a6 AF91      		pop r26
+ 124 00a8 9F91      		pop r25
+ 125 00aa 8F91      		pop r24
+ 126 00ac 7F91      		pop r23
+ 127 00ae 6F91      		pop r22
+ 128 00b0 5F91      		pop r21
+ 129 00b2 2F91      		pop r18
+ 130 00b4 0F90      		pop r0
+ 131 00b6 0FBE      		out __SREG__,r0
+ 132 00b8 0F90      		pop r0
+ 133 00ba 1F90      		pop __zero_reg__
+ 134 00bc 1895      		reti
+ 135               	.LFE3:
+ 137               	.global	cursor
+ 138               	.global	cursor
+ 139               		.section .bss
+ 142               	cursor:
+ 143 0000 00        		.skip 1,0
+ 144               	.global	segments
+ 145               		.data
+ 148               	segments:
+ 149 0000 3F        		.byte	63
+ 150 0001 06        		.byte	6
+ 151 0002 5B        		.byte	91
+ 152 0003 4F        		.byte	79
+ 153 0004 66        		.byte	102
+ 154 0005 6D        		.byte	109
+ 155 0006 7D        		.byte	125
+ 156 0007 07        		.byte	7
+ 157 0008 7F        		.byte	127
+ 158 0009 6F        		.byte	111
+ 159               		.comm buffer,6,1
+ 192               	.Letext0:
 DEFINED SYMBOLS
                             *ABS*:00000000 led7seg.c
-C:\Users\Grzegorz\AppData\Local\Temp/cc0S4oXT.s:2      *ABS*:0000003f __SREG__
-C:\Users\Grzegorz\AppData\Local\Temp/cc0S4oXT.s:3      *ABS*:0000003e __SP_H__
-C:\Users\Grzegorz\AppData\Local\Temp/cc0S4oXT.s:4      *ABS*:0000003d __SP_L__
-C:\Users\Grzegorz\AppData\Local\Temp/cc0S4oXT.s:5      *ABS*:00000034 __CCP__
-C:\Users\Grzegorz\AppData\Local\Temp/cc0S4oXT.s:6      *ABS*:00000000 __tmp_reg__
-C:\Users\Grzegorz\AppData\Local\Temp/cc0S4oXT.s:7      *ABS*:00000001 __zero_reg__
-C:\Users\Grzegorz\AppData\Local\Temp/cc0S4oXT.s:18     .text:00000000 init_led7seg
-C:\Users\Grzegorz\AppData\Local\Temp/cc0S4oXT.s:45     .text:00000018 __vector_10
-C:\Users\Grzegorz\AppData\Local\Temp/cc0S4oXT.s:134    .bss:00000000 cursor
+C:\Users\Grzegorz\AppData\Local\Temp/ccjVJeYU.s:2      *ABS*:0000003f __SREG__
+C:\Users\Grzegorz\AppData\Local\Temp/ccjVJeYU.s:3      *ABS*:0000003e __SP_H__
+C:\Users\Grzegorz\AppData\Local\Temp/ccjVJeYU.s:4      *ABS*:0000003d __SP_L__
+C:\Users\Grzegorz\AppData\Local\Temp/ccjVJeYU.s:5      *ABS*:00000034 __CCP__
+C:\Users\Grzegorz\AppData\Local\Temp/ccjVJeYU.s:6      *ABS*:00000000 __tmp_reg__
+C:\Users\Grzegorz\AppData\Local\Temp/ccjVJeYU.s:7      *ABS*:00000001 __zero_reg__
+C:\Users\Grzegorz\AppData\Local\Temp/ccjVJeYU.s:18     .text:00000000 init_led7seg
+C:\Users\Grzegorz\AppData\Local\Temp/ccjVJeYU.s:53     .text:00000024 __vector_10
+C:\Users\Grzegorz\AppData\Local\Temp/ccjVJeYU.s:142    .bss:00000000 cursor
                             *COM*:00000006 buffer
-C:\Users\Grzegorz\AppData\Local\Temp/cc0S4oXT.s:140    .data:00000000 segments
+C:\Users\Grzegorz\AppData\Local\Temp/ccjVJeYU.s:148    .data:00000000 segments
 
 UNDEFINED SYMBOLS
 __divmodhi4
