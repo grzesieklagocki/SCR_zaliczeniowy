@@ -223,23 +223,6 @@
  326               	.Letext0:
 DEFINED SYMBOLS
                             *ABS*:00000000 clock.c
-<<<<<<< HEAD
-C:\Users\Grzegorz\AppData\Local\Temp/cc7yTifV.s:2      *ABS*:0000003f __SREG__
-C:\Users\Grzegorz\AppData\Local\Temp/cc7yTifV.s:3      *ABS*:0000003e __SP_H__
-C:\Users\Grzegorz\AppData\Local\Temp/cc7yTifV.s:4      *ABS*:0000003d __SP_L__
-C:\Users\Grzegorz\AppData\Local\Temp/cc7yTifV.s:5      *ABS*:00000034 __CCP__
-C:\Users\Grzegorz\AppData\Local\Temp/cc7yTifV.s:6      *ABS*:00000000 __tmp_reg__
-C:\Users\Grzegorz\AppData\Local\Temp/cc7yTifV.s:7      *ABS*:00000001 __zero_reg__
-C:\Users\Grzegorz\AppData\Local\Temp/cc7yTifV.s:18     .text:00000000 clock_set_seconds
-                            *COM*:00000003 current_time
-C:\Users\Grzegorz\AppData\Local\Temp/cc7yTifV.s:33     .text:00000006 clock_set_minutes
-C:\Users\Grzegorz\AppData\Local\Temp/cc7yTifV.s:48     .text:0000000c clock_set_hours
-C:\Users\Grzegorz\AppData\Local\Temp/cc7yTifV.s:63     .text:00000012 add_minute
-C:\Users\Grzegorz\AppData\Local\Temp/cc7yTifV.s:99     .text:0000003c add_second
-C:\Users\Grzegorz\AppData\Local\Temp/cc7yTifV.s:122    .text:00000056 add_hour
-C:\Users\Grzegorz\AppData\Local\Temp/cc7yTifV.s:143    .text:0000006c init_clock
-C:\Users\Grzegorz\AppData\Local\Temp/cc7yTifV.s:172    .text:00000088 __vector_7
-=======
 C:\Users\Grzegorz\AppData\Local\Temp/ccmqHL5F.s:2      *ABS*:0000003f __SREG__
 C:\Users\Grzegorz\AppData\Local\Temp/ccmqHL5F.s:3      *ABS*:0000003e __SP_H__
 C:\Users\Grzegorz\AppData\Local\Temp/ccmqHL5F.s:4      *ABS*:0000003d __SP_L__
@@ -255,7 +238,6 @@ C:\Users\Grzegorz\AppData\Local\Temp/ccmqHL5F.s:99     .text:0000003c add_second
 C:\Users\Grzegorz\AppData\Local\Temp/ccmqHL5F.s:122    .text:00000056 add_hour
 C:\Users\Grzegorz\AppData\Local\Temp/ccmqHL5F.s:143    .text:0000006c init_clock
 C:\Users\Grzegorz\AppData\Local\Temp/ccmqHL5F.s:172    .text:00000088 __vector_7
->>>>>>> 7b0148d945b451460632c52915bf9b38c43b29e6
 
 UNDEFINED SYMBOLS
 __udivmodqi4
