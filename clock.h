@@ -12,4 +12,6 @@ void add_second(void); // funkcja zwiekszajaca czas o 1s
 void add_minute(void); // funkcja zwiekszajaca czas o 1m
 void add_hour(void); // funkcja zwiekszajaca czas o 1h
 
+void refresh_displays(void); // odswieza dane w buforze wyswietlaczy
+
 #endif

@@ -95,9 +95,9 @@ void add_hour(void)
 }
 
 /****************************************************************/
-// obsluga przerwania timer1 (do odmierzania sekund)
+// odswieza dane w buforze wyswietlaczy
 /****************************************************************/
-ISR(TIMER1_COMPA_vect)
+void refresh_displays(void)
 {
 	buffer[0] = current_time.hours / 10;
 	buffer[1] = current_time.hours % 10;
@@ -105,6 +105,14 @@ ISR(TIMER1_COMPA_vect)
 	buffer[3] = current_time.minutes % 10;
 	buffer[4] = current_time.seconds / 10;
 	buffer[5] = current_time.seconds % 10;
+}
+
+/****************************************************************/
+// obsluga przerwania timer1 (do odmierzania sekund)
+/****************************************************************/
+ISR(TIMER1_COMPA_vect)
+{
+	refresh_displays();
 
 	add_second();
 }
@@ -115,6 +123,7 @@ ISR(TIMER1_COMPA_vect)
 ISR(INT0_vect) 
 {
 	add_hour();
+	refresh_displays();
 }
 
 /****************************************************************/
@@ -123,4 +132,5 @@ ISR(INT0_vect)
 ISR(INT1_vect)
 {
 	add_minute();
+	refresh_displays();
 }
