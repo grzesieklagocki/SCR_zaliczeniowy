@@ -15,6 +15,23 @@ struct time
 
 
 /****************************************************************/
+// inicjalizacja zegarka
+/****************************************************************/
+void init_clock(void)
+{
+	// inicjalizacja timera 1 i ustawienie na 1 Hz (do odmierzania sekund)
+	TCCR1B |=  (1 << WGM12); // tryb CTC
+    TCCR1B |= (1 << CS12); // preskaler 256
+	OCR1A = 31249; // (1 / czestotliwosc) / (1 / (F_CPU / preskaler))) - 1
+    TIMSK |= (1 << OCIE1A); // zezwolenie na przerwanie timera 1 przy przepelnieniu
+
+	// inicjalizacja przerwan INT0 i INT1 dla przycisków
+	PORTD |= (1 << PD2) | (1 << PD3); // wlaczenie rezystora pull-up dla wejsc z przyciskami
+	MCUCR |= (1 << ISC01) | (1 << ISC11); // zbocze opadajace dla INT0 i INT1
+	GICR |= (1 << INT0) | (1 << INT1); // wlaczenie przerwan dla INT0 i INT1
+}
+
+/****************************************************************/
 // funkcja ustawiajaca sekundy
 /****************************************************************/
 void clock_set_seconds(uint8_t seconds)
@@ -78,17 +95,6 @@ void add_hour(void)
 }
 
 /****************************************************************/
-// inicjalizacja timera 1 i ustawienie na 1 Hz (do odmierzania sekund)
-/****************************************************************/
-void init_clock(void)
-{
-	TCCR1B |=  (1 << WGM12); // tryb CTC
-    TCCR1B |= (1 << CS12); // preskaler 256
-	OCR1A = 31249; // (1 / czestotliwosc) / (1 / (F_CPU / preskaler))) - 1
-    TIMSK |= (1 << OCIE1A); // zezwolenie na przerwanie timera 1 przy przepelnieniu
-}
-
-/****************************************************************/
 // obsluga przerwania timer1 (do odmierzania sekund)
 /****************************************************************/
 ISR(TIMER1_COMPA_vect)
@@ -101,4 +107,20 @@ ISR(TIMER1_COMPA_vect)
 	buffer[5] = current_time.seconds % 10;
 
 	add_second();
+}
+
+/****************************************************************/
+// obsluga nacisniecia przycisku SELECT
+/****************************************************************/
+ISR(INT0_vect) 
+{
+	add_hour();
+}
+
+/****************************************************************/
+// obsluga nacisniecia przycisku SET
+/****************************************************************/
+ISR(INT1_vect)
+{
+	add_minute();
 }

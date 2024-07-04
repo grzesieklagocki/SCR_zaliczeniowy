@@ -2,7 +2,7 @@
 #define CLOCK_H_
 
 // deklaracje funkcji
-void init_clock(void); // inicjalizacja timera 1 i ustawienie na 1 Hz (do odmierzania sekund)
+void init_clock(void); // inicjalizacja zegarka
 
 void clock_set_seconds(uint8_t seconds); // funkcja ustawiajaca sekundy
 void clock_set_minutes(uint8_t minutes); // funkcja ustawiajaca minuty
