@@ -113,7 +113,6 @@ void refresh_displays(void)
 ISR(TIMER1_COMPA_vect)
 {
 	refresh_displays();
-
 	add_second();
 }
 

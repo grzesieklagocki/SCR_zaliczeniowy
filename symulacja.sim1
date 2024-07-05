@@ -114,7 +114,7 @@
 
 <item itemtype="Resistor" CircId="Resistor-99" mainComp="false" ShowProp="Resistance" Show_id="false" Show_Val="true" Pos="204,52" rotation="0" hflip="1" vflip="1" label="Resistor-99" idLabPos="-16,-24" labelrot="0" valLabPos="-10.8192,-8.32341" valLabRot="0" Resistance="220 Ω" />
 
-<item itemtype="Potentiometer" CircId="Potentiometer-105" mainComp="false" ShowProp="Resistance" Show_id="false" Show_Val="true" Pos="0,-216" rotation="90" hflip="1" vflip="1" label="Potentiometer-105" idLabPos="-16,-40" labelrot="0" valLabPos="15,-20" valLabRot="0" Resistance="1 kΩ" Value_Ohm="0 Ω" Slider="false" Scale="1" />
+<item itemtype="Potentiometer" CircId="Potentiometer-105" mainComp="false" ShowProp="Resistance" Show_id="false" Show_Val="true" Pos="0,-216" rotation="90" hflip="1" vflip="1" label="Potentiometer-105" idLabPos="-16,-40" labelrot="0" valLabPos="15,-20" valLabRot="0" Resistance="1 kΩ" Value_Ohm="385 Ω" Slider="false" Scale="1" />
 
 <item itemtype="Rail" CircId="Rail-106" mainComp="false" ShowProp="Voltage" Show_id="false" Show_Val="true" Pos="0,-260" rotation="90" hflip="1" vflip="1" label="Rail-106" idLabPos="-5,-10" labelrot="-90" valLabPos="-8.91115,24.1899" valLabRot="-90" Voltage="5 V" />
 
@@ -170,6 +170,12 @@
 
 <item itemtype="Buffer" CircId="Buffer-229" mainComp="false" Show_id="false" Show_Val="false" Pos="224,100" rotation="0" hflip="1" vflip="1" label="Buffer-229" idLabPos="-16,-24" labelrot="0" valLabPos="-16,20" valLabRot="0" Input_High_V="2.5 V" Input_Low_V="2.5 V" Input_Imped="1000 MΩ" Invert_Inputs="false" Out_High_V="5 V" Out_Low_V="0 V" Out_Imped="40 Ω" initHigh="false" Inverted="true" Open_Collector="false" Tristate="false" Tpd_ps="10 ns" Tr_ps="3 ns" Tf_ps="4 ns" />
 
+<item itemtype="Probe" CircId="Probe-232" mainComp="false" Show_id="false" Show_Val="true" Pos="-8,-308" rotation="-45" hflip="1" vflip="1" label="Probe-232" idLabPos="16,-16" labelrot="45" valLabPos="16,0" valLabRot="45" ShowVolt="true" Threshold="2.5 V" />
+
+<item itemtype="Capacitor" CircId="Capacitor-234" mainComp="false" ShowProp="Capacitance" Show_id="false" Show_Val="true" Pos="48,-152" rotation="0" hflip="1" vflip="1" label="Capacitor-234" idLabPos="-16,-24" labelrot="0" valLabPos="-16,6" valLabRot="0" Capacitance="10 nF" Resistance="1 µΩ" InitVolt="0 V" ReaStep="0 ns" />
+
+<item itemtype="Ground" CircId="Ground-235" mainComp="false" Show_id="false" Show_Val="false" Pos="72,-128" rotation="0" hflip="1" vflip="1" label="Ground-235" idLabPos="-16,8" labelrot="0" valLabPos="-16,20" valLabRot="0" />
+
 <item itemtype="Node" CircId="Node-100" mainComp="false" Pos="-208,-24" />
 
 <item itemtype="Node" CircId="Node-101" mainComp="false" Pos="-112,-24" />
@@ -183,6 +189,8 @@
 <item itemtype="Node" CircId="Node-180" mainComp="false" Pos="-168,-68" />
 
 <item itemtype="Node" CircId="Node-188" mainComp="false" Pos="-144,68" />
+
+<item itemtype="Node" CircId="Node-233" mainComp="false" Pos="-24,-216" />
 
 <item itemtype="Connector" uid="Connector-1" startpinid="mega32-1-PORTV0" endpinid="Rail-2-outnod" pointList="-36,-136,0,-136,0,-140" />
 
@@ -221,8 +229,6 @@
 <item itemtype="Connector" uid="Connector-158" startpinid="Node-102-2" endpinid="Node-104-0" pointList="-16,-24,-16,-24" />
 
 <item itemtype="Connector" uid="Connector-159" startpinid="Node-104-2" endpinid="Bus-76-busPinI" pointList="-16,-24,-16,4" />
-
-<item itemtype="Connector" uid="Connector-160" startpinid="mega32-1-PORTA0" endpinid="Potentiometer-105-PinM" pointList="-36,-216,-16,-216" />
 
 <item itemtype="Connector" uid="Connector-162" startpinid="Potentiometer-105-PinB" endpinid="Ground-107-Gnd" pointList="0,-200,0,-192" />
 
@@ -453,5 +459,15 @@
 <item itemtype="Connector" uid="Connector-561" startpinid="Tunnel-131-pin" endpinid="Buffer-229-in0" pointList="196,100,208,100" />
 
 <item itemtype="Connector" uid="Connector-562" startpinid="Buffer-229-out" endpinid="Seven Segment-93-pin_commona" pointList="240,100,256,100,256,60" />
+
+<item itemtype="Connector" uid="Connector-566" startpinid="Probe-232-inpin" endpinid="Node-233-1" pointList="-24,-292,-24,-216" />
+
+<item itemtype="Connector" uid="Connector-567" startpinid="mega32-1-PORTA0" endpinid="Node-233-0" pointList="-36,-216,-24,-216" />
+
+<item itemtype="Connector" uid="Connector-568" startpinid="Node-233-2" endpinid="Potentiometer-105-PinM" pointList="-24,-216,-16,-216" />
+
+<item itemtype="Connector" uid="Connector-569" startpinid="mega32-1-PORTV1" endpinid="Capacitor-234-lPin" pointList="-36,-152,-16,-152,-16,-164,16,-164,16,-152,32,-152" />
+
+<item itemtype="Connector" uid="Connector-570" startpinid="Capacitor-234-rPin" endpinid="Ground-235-Gnd" pointList="64,-152,72,-152,72,-144" />
 
 </circuit>
