@@ -3,7 +3,12 @@
 
 #include "clock.h"
 #include "led7seg.h"
+#include "adc.h"
 
+
+enum modes { RUN, ADJ }; // tryby pracy zegarka: RUN - odmierzanie czasu, ADJ - ust. czasu
+
+volatile uint8_t mode = RUN; // aktualny tryb pracy, domyślnie uruchomiony
 
 // struktura do przechowywania aktualnego czasu
 struct time
@@ -11,7 +16,7 @@ struct time
 	uint8_t seconds,
 		minutes,
 		hours;
-} current_time; // zmienna przechowujaca aktualny czas
+} volatile current_time; // zmienna przechowujaca aktualny czas
 
 
 /****************************************************************/
@@ -112,8 +117,11 @@ void refresh_displays(void)
 /****************************************************************/
 ISR(TIMER1_COMPA_vect)
 {
-	refresh_displays();
-	add_second();
+	if (mode == RUN)
+	{
+		refresh_displays();
+		add_second();
+	}
 }
 
 /****************************************************************/
