@@ -21,9 +21,9 @@ void init_clock(void)
 {
 	// inicjalizacja timera 1 i ustawienie na 1 Hz (do odmierzania sekund)
 	TCCR1B |=  (1 << WGM12); // tryb CTC
-    TCCR1B |= (1 << CS12); // preskaler 256
+	TCCR1B |= (1 << CS12); // preskaler 256
 	OCR1A = 31249; // (1 / czestotliwosc) / (1 / (F_CPU / preskaler))) - 1
-    TIMSK |= (1 << OCIE1A); // zezwolenie na przerwanie timera 1 przy przepelnieniu
+	TIMSK |= (1 << OCIE1A); // zezwolenie na przerwanie timera 1 przy przepelnieniu
 
 	// inicjalizacja przerwan INT0 i INT1 dla przycisków
 	PORTD |= (1 << PD2) | (1 << PD3); // wlaczenie rezystora pull-up dla wejsc z przyciskami
@@ -36,7 +36,7 @@ void init_clock(void)
 /****************************************************************/
 void clock_set_seconds(uint8_t seconds)
 {
-    current_time.seconds = seconds;
+	current_time.seconds = seconds;
 }
 
 /****************************************************************/
@@ -44,7 +44,7 @@ void clock_set_seconds(uint8_t seconds)
 /****************************************************************/
 void clock_set_minutes(uint8_t minutes)
 {
-    current_time.minutes = minutes;
+	current_time.minutes = minutes;
 }
 
 /****************************************************************/
@@ -52,7 +52,7 @@ void clock_set_minutes(uint8_t minutes)
 /****************************************************************/
 void clock_set_hours(uint8_t hours)
 {
-    current_time.hours = hours;
+	current_time.hours = hours;
 }
 
 /****************************************************************/
