@@ -5,9 +5,12 @@
 #include "led7seg.h"
 #include "adc.h"
 
+#define CURSOR_NEXT 	   cursor_adj = (cursor_adj + 1) % 6; // przesuniecie kursora
+
+
+volatile uint8_t cursor_adj = 0; // aktualnie wybrany wyswietlacz przy ustawianiu
 
 enum modes { RUN, ADJ }; // tryby pracy zegarka: RUN - odmierzanie czasu, ADJ - ust. czasu
-
 volatile uint8_t mode = RUN; // aktualny tryb pracy, domyślnie uruchomiony
 
 // struktura do przechowywania aktualnego czasu

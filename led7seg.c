@@ -4,12 +4,12 @@
 #include "led7seg.h"
 
 
-#define SELECT_DISPLAY(x)  PORTB = (1 << x);
-#define SET_DIGIT(num)     PORTC = ((num < 0 || num > 9) ? 0 : segments[num]);
-#define CURSOR_NEXT 	   cursor = (cursor + 1) % 6;
+#define SELECT_DISPLAY(x)  PORTB = (1 << x); // wybor wyswietlacza (multipleksowanie)
+#define SET_DIGIT(num)     PORTC = ((num < 0 || num > 9) ? 0 : segments[num]); // ustawienie libczby na wyswietlaczu
+#define CURSOR_NEXT 	   cursor = (cursor + 1) % 6; // przesuniecie kursora
 
 
-volatile uint8_t cursor = 0; // aktualnie wybrany wyswietlacz przy multipleksowaniu/ustawianiu
+volatile uint8_t cursor = 0; // aktualnie wybrany wyswietlacz przy multipleksowaniu
 volatile uint8_t buffer[6]; // bufor cyfr dla wyswietlaczy
 
 // tablica wzorcow dla wyswietlacza 7-segmentowego
