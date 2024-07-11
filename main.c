@@ -12,19 +12,47 @@ int main(void)
 {
 	// inicjalizacja
 	init_led7seg(); // inicjalizacja wyswietlaczy
-	//init_clock(); // inicjalizacja zegarka
+	init_clock(); // inicjalizacja zegarka
 	init_adc(); // inicjalizacja ADC
-
-	clock_set_seconds(57); // ustawienie sekund
-	clock_set_minutes(59); // ustawienie minut
-	clock_set_hours(23); // ustawienie godziny
 
 	sei(); // zezwolenie globalne na przerwania
 
 	while(1)
 	{
-		// kod programu w przerwaniach
-		buffer[0] = read_adc() / 103;
+		refresh_displays();
+
+		if (clock_tick)
+		{
+			clock_tick = 0;
+
+			if (clock_mode == RUN)
+			{
+				add_second();
+			}
+			else // if (mode == ADJ)
+			{
+				// do zaimplementowania miganie
+			}
+			
+		}
+
+		if (clock_mode == RUN) // ponizej kod dla ustawiania zegarka pomijany w trybie RUN
+			continue;
+		
+		uint16_t adc = read_adc(); // odczyt adc
+		
+		switch (cursor_adj) // ustawienie zegarka w zaleznosci od pozycji kursora
+		{
+			case 0:
+				clock_set_hours(adc / 43);
+				break;
+			case 1:
+				clock_set_minutes(adc / 17);
+				break;
+			default:
+				clock_set_seconds(adc / 17);
+				break;
+		}
 	}
 	
 	return 0;

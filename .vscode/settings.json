@@ -2,6 +2,7 @@
     "C_Cpp.errorSquiggles": "disabled",
     "files.associations": {
         "led7seg.h": "c",
-        "interrupt.h": "c"
+        "interrupt.h": "c",
+        "clock.h": "c"
     }
 }

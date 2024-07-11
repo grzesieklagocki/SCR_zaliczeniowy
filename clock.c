@@ -5,21 +5,15 @@
 #include "led7seg.h"
 #include "adc.h"
 
-#define CURSOR_NEXT 	   cursor_adj = (cursor_adj + 1) % 6; // przesuniecie kursora
+#define CURSOR_NEXT 	   cursor_adj = (cursor_adj + 1) % 3; // kolejna pozycja kursora
+#define CURSOR_RESET	   cursor_adj = 2; // reset kursora
 
 
-volatile uint8_t cursor_adj = 0; // aktualnie wybrany wyswietlacz przy ustawianiu
+volatile uint8_t clock_mode = RUN; // aktualny tryb pracy, domyślnie uruchomiony
+volatile uint8_t clock_tick; // flaga ustawiana w przerwaniu do uzycia w petli glownej
+volatile uint8_t cursor_adj; // aktualna pozycja kursora
 
-enum modes { RUN, ADJ }; // tryby pracy zegarka: RUN - odmierzanie czasu, ADJ - ust. czasu
-volatile uint8_t mode = RUN; // aktualny tryb pracy, domyślnie uruchomiony
-
-// struktura do przechowywania aktualnego czasu
-struct time
-{
-	uint8_t seconds,
-		minutes,
-		hours;
-} volatile current_time; // zmienna przechowujaca aktualny czas
+time current_time;
 
 
 /****************************************************************/
@@ -37,6 +31,8 @@ void init_clock(void)
 	PORTD |= (1 << PD2) | (1 << PD3); // wlaczenie rezystora pull-up dla wejsc z przyciskami
 	MCUCR |= (1 << ISC01) | (1 << ISC11); // zbocze opadajace dla INT0 i INT1
 	GICR |= (1 << INT0) | (1 << INT1); // wlaczenie przerwan dla INT0 i INT1
+
+	clock_set_mode(RUN); // ustawienie trybu RUN (praca normalna)
 }
 
 /****************************************************************/
@@ -116,15 +112,30 @@ void refresh_displays(void)
 }
 
 /****************************************************************/
+// ustawia tryb pracy zegara
+/****************************************************************/
+void clock_set_mode(enum modes mode)
+{
+	clock_mode = mode;
+
+	if (mode == RUN)
+	{
+		OCR1A = 31249; // ustawienie dla 1 Hz
+		CURSOR_RESET;
+	}
+	else // if (mode == ADJ)
+	{
+		OCR1A = 3125;
+		CURSOR_NEXT;
+	}
+}
+
+/****************************************************************/
 // obsluga przerwania timer1 (do odmierzania sekund)
 /****************************************************************/
 ISR(TIMER1_COMPA_vect)
 {
-	if (mode == RUN)
-	{
-		refresh_displays();
-		add_second();
-	}
+	clock_tick = 1; // ustawienie flagi do uzycia w petli glownej
 }
 
 /****************************************************************/
@@ -132,8 +143,7 @@ ISR(TIMER1_COMPA_vect)
 /****************************************************************/
 ISR(INT0_vect) 
 {
-	add_hour();
-	refresh_displays();
+	clock_set_mode(ADJ);
 }
 
 /****************************************************************/
@@ -141,6 +151,5 @@ ISR(INT0_vect)
 /****************************************************************/
 ISR(INT1_vect)
 {
-	add_minute();
-	refresh_displays();
+	clock_set_mode(RUN);
 }
