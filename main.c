@@ -5,6 +5,8 @@
 #include "clock.h"
 #include "adc.h"
 
+#define LIMIT(arg, val)	((arg < val) ? arg : val) // makro ograniczajace wartosc
+
 /****************************************************************/
 // funkcja glowna programu
 /****************************************************************/
@@ -41,16 +43,16 @@ int main(void)
 		
 		uint16_t adc = read_adc(); // odczyt adc
 		
-		switch (cursor_adj) // ustawienie zegarka w zaleznosci od pozycji kursora
+		switch (cursor_adj) // ustawienie zegarka w zaleznosci odq pozycji kursora
 		{
 			case 0:
 				clock_set_hours(adc / 43);
 				break;
 			case 1:
-				clock_set_minutes(adc / 17);
+				clock_set_minutes(LIMIT(adc, 1003) / 17); // ograniczenie wartosci adc do 1003 (59*17)
 				break;
 			default:
-				clock_set_seconds(adc / 17);
+				clock_set_seconds(LIMIT(adc, 1003) / 17);
 				break;
 		}
 	}
