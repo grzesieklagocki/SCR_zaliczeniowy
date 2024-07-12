@@ -31,11 +31,6 @@ int main(void)
 			{
 				add_second();
 			}
-			else // if (mode == ADJ)
-			{
-				// do zaimplementowania miganie
-			}
-			
 		}
 
 		if (clock_mode == RUN) // ponizej kod dla ustawiania zegarka pomijany w trybie RUN

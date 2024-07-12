@@ -43,7 +43,23 @@ void init_led7seg(void)
 	TCCR0 |= (1 << WGM01); // tryb CTC
 	TCCR0 |= (1 << CS02) | (1 << CS00); // preskaler 1024
 	OCR0 = 171; // (1 / czestotliwosc) / (1 / (F_CPU / preskaler))) - 1
+	led7seg_start();
+}
+
+/****************************************************************/
+// wlaczenie multipleksowania
+/****************************************************************/
+void led7seg_start(void)
+{
 	TIMSK |= (1 << OCIE0); // zezwolenie na przerwanie timera 0
+}
+
+/****************************************************************/
+// wylaczenie multipleksowania
+/****************************************************************/
+void led7seg_stop(void)
+{
+	TIMSK &= ~(1 << OCIE0); // brak zezwolenia na przerwanie timera 0
 }
 
 /****************************************************************/

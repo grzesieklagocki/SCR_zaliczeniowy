@@ -12,8 +12,9 @@
 volatile uint8_t clock_mode = RUN; // aktualny tryb pracy, domyślnie uruchomiony
 volatile uint8_t clock_tick; // flaga ustawiana w przerwaniu do uzycia w petli glownej
 volatile uint8_t cursor_adj; // aktualna pozycja kursora
+volatile uint8_t blinker; // okresla stan migania przy ustawianiu zegarka
 
-time current_time;
+time current_time; // aktualny czas
 
 
 /****************************************************************/
@@ -103,12 +104,22 @@ void add_hour(void)
 /****************************************************************/
 void refresh_displays(void)
 {
+	led7seg_stop();
+
 	buffer[0] = current_time.hours / 10;
 	buffer[1] = current_time.hours % 10;
 	buffer[2] = current_time.minutes / 10;
 	buffer[3] = current_time.minutes % 10;
 	buffer[4] = current_time.seconds / 10;
 	buffer[5] = current_time.seconds % 10;
+
+	if (clock_mode == ADJ && blinker)
+	{
+		uint8_t idx = cursor_adj * 2;
+		buffer[idx] = buffer[idx + 1] = -1;
+	}
+
+	led7seg_start();
 }
 
 /****************************************************************/
@@ -119,15 +130,9 @@ void clock_set_mode(enum modes mode)
 	clock_mode = mode;
 
 	if (mode == RUN)
-	{
-		OCR1A = 31249; // ustawienie dla 1 Hz
-		CURSOR_RESET;
-	}
+		CURSOR_RESET
 	else // if (mode == ADJ)
-	{
-		OCR1A = 3125;
-		CURSOR_NEXT;
-	}
+		CURSOR_NEXT
 }
 
 /****************************************************************/
@@ -136,6 +141,7 @@ void clock_set_mode(enum modes mode)
 ISR(TIMER1_COMPA_vect)
 {
 	clock_tick = 1; // ustawienie flagi do uzycia w petli glownej
+	blinker ^= 1; // zmiana stanu
 }
 
 /****************************************************************/
